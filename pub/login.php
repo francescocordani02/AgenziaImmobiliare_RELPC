@@ -1,6 +1,8 @@
 <?php
     $_SESSION['current_page']="registrazione";
     include ("../template/template.php");
+    define('mydal', TRUE);
+    include '../config/dal.php';
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -17,6 +19,13 @@
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-md-6">
                     <div id="login-box" class="col-md-12">
+                    <?php
+                        if (isset($_REQUEST['username'])){
+                            $username = $_POST['username'];
+                            $password = $_POST['password'];
+                            login($username, $password);
+                        }else{
+                    ?>
                         <form id="login-form" class="form" action="" method="post">
                             <h3 class="text-center text-info">Login</h3>
                             <div class="form-group">
@@ -25,7 +34,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info">Password:</label><br>
-                                <input type="text" name="password" id="password" class="form-control" required>
+                                <input type="password" name="password" id="password" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <label for="remember-me" class="text-spazio text-info"></label><br>
@@ -35,6 +44,7 @@
                                 <p class="text-info">Non sei registrato? <a  href="registrazione.php">Registrati qui</a></p>
                             </div>
                         </form>
+                        <?php }?>
                     </div>
                 </div>
             </div>

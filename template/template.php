@@ -12,7 +12,6 @@
     <script src=<?php if($currentpage=="index"){echo "js/script.js";}else{echo "../js/script.js";}?>></script>
     <script src=<?php if($currentpage=="index"){echo "js/script2.js";}else{echo "../js/script2.js";}?>></script>
     <script src=<?php if($currentpage=="index"){echo "js/script3.js";}else{echo "../js/script3.js";}?>></script>
-    <title>Document</title>
 </head>
 <body>
     
