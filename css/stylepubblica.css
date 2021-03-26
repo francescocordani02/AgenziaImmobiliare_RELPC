@@ -1,0 +1,51 @@
+.flex-container {
+    display: flex;
+    flex-flow: row wrap;
+    background: #ddd;
+    justify-content: center;
+    align-items: center;
+    height: 470px;
+    background-image: url(../img/sfondo1.jpg);
+}
+
+.stretch {
+    background: #cccccc;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.flex-container>div {
+    background-color: #ffffff;
+    width: 500px;
+    margin: 10px;
+    text-align: center;
+    line-height: 75px;
+    font-size: 30px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif border-radius;
+    border-radius: .25rem;
+    height: 250px;
+    text-align: center;
+}
+
+div #logo {
+    background-image: url(../img/logo1.gif);
+    background-size: cover;
+    width: 250px;
+    margin: -14px;
+    text-align: center;
+    line-height: 75px;
+    font-size: 30px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border-radius: .25rem;
+    height: 250px;
+}
+
+.title {
+    margin-top: 16%;
+    font-weight: bold;
+}
+
+div #text {
+    background-color: #171717;
+    color: #c5c5c5;
+}
