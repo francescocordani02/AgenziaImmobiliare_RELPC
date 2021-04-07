@@ -167,6 +167,145 @@ include 'template/template.php';
             </div>
         </div>
    </div>
+   <div class="container-fluid" style="background-color:#171717";>
+        <div class="row">
+            <div class="col-sm m-4">
+                <div class="card" style="width:560px;text-align:center;background-color:#171717;color:white;border-style:solid; border-width:4px;border-color:#d6ad60;">
+                    <div class="card-body">
+                        <img src="<?php $conn=Connettiti();
+                            $query= $conn->query("SELECT Immagine FROM immagini INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento WHERE IdAppartamento=1");
+                            if($query->num_rows>0){
+                                while($row =$query->fetch_assoc()){
+                                    echo ''.$row['Immagine'].'';
+                                }
+                            } 
+                        ?>" class="card-img-top" alt="img">
+                        <h5 class="card-title"style="padding-top:15px;">
+                        <?php $conn=Connettiti();
+                        $query= $conn->query("SELECT Categoria FROM categorie INNER JOIN appartamenti ON IdCategoria=FK_IdCategoria WHERE IdAppartamento=1");
+                        if($query->num_rows>0){
+                            while($row =$query->fetch_assoc()){
+                                echo ''.$row['Categoria'].'';
+                            }
+                        } 
+                        ?>
+                        </h5>
+                        <p class="card-text">
+                        <?php $conn=Connettiti();
+                            $query= $conn->query("SELECT Note FROM appartamenti  WHERE IdAppartamento=1");
+                            if($query->num_rows>0){
+                                while($row =$query->fetch_assoc()){
+                                    echo ''.$row['Note'].'';
+                                }
+                            } 
+                        ?>
+                        </p>
+                        <p class="card-text">
+                        <?php $conn=Connettiti();
+                            $query= $conn->query("SELECT PrezzoGiorno FROM appartamenti  WHERE IdAppartamento=1");
+                            if($query->num_rows>0){
+                                while($row =$query->fetch_assoc()){
+                                    echo 'prezzo giornaliero: '.$row['PrezzoGiorno'].'€';
+                                }
+                            } 
+                        ?>
+                        </p>
+                        <a href="#" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm m-4">
+                <div class="card" style="width:560px;text-align:center;background-color:#171717;color:white;border-style:solid; border-width:4px;border-color:#d6ad60;">
+                    <div class="card-body">
+                        <img src="<?php $conn=Connettiti();
+                            $query= $conn->query("SELECT Immagine FROM immagini INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento WHERE IdAppartamento=2");
+                            if($query->num_rows>0){
+                                while($row =$query->fetch_assoc()){
+                                    echo ''.$row['Immagine'].'';
+                                }
+                            } 
+                        ?>" class="card-img-top" alt="img">
+                        <h5 class="card-title"style="padding-top:15px;">
+                        <?php $conn=Connettiti();
+                        $query= $conn->query("SELECT Categoria FROM categorie INNER JOIN appartamenti ON IdCategoria=FK_IdCategoria WHERE IdAppartamento=2");
+                        if($query->num_rows>0){
+                            while($row =$query->fetch_assoc()){
+                                echo ''.$row['Categoria'].'';
+                            }
+                        } 
+                        ?>
+                        </h5>
+                        <p class="card-text">
+                        <?php $conn=Connettiti();
+                            $query= $conn->query("SELECT Note FROM appartamenti  WHERE IdAppartamento=2");
+                            if($query->num_rows>0){
+                                while($row =$query->fetch_assoc()){
+                                    echo ''.$row['Note'].'';
+                                }
+                            } 
+                        ?>
+                        </p>
+                        <p class="card-text">
+                        <?php $conn=Connettiti();
+                            $query= $conn->query("SELECT PrezzoGiorno FROM appartamenti  WHERE IdAppartamento=2");
+                            if($query->num_rows>0){
+                                while($row =$query->fetch_assoc()){
+                                    echo 'prezzo giornaliero: '.$row['PrezzoGiorno'].'€';
+                                }
+                            } 
+                        ?>
+                        </p>
+                        <a href="#" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm m-4">
+                <div class="card" style="width:560px;text-align:center;background-color:#171717;color:white;border-style:solid; border-width:4px;border-color:#d6ad60;">
+                    <div class="card-body">
+                        <img src="<?php $conn=Connettiti();
+                            $query= $conn->query("SELECT Immagine FROM immagini INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento WHERE IdAppartamento=1");
+                            if($query->num_rows>0){
+                                while($row =$query->fetch_assoc()){
+                                    echo ''.$row['Immagine'].'';
+                                }
+                            } 
+                        ?>" class="card-img-top" alt="img">
+                        <h5 class="card-title"style="padding-top:15px;">
+                        <?php $conn=Connettiti();
+                        $query= $conn->query("SELECT Categoria FROM categorie INNER JOIN appartamenti ON IdCategoria=FK_IdCategoria WHERE IdAppartamento=1");
+                        if($query->num_rows>0){
+                            while($row =$query->fetch_assoc()){
+                                echo ''.$row['Categoria'].'';
+                            }
+                        } 
+                        ?>
+                        </h5>
+                        <p class="card-text">
+                        <?php $conn=Connettiti();
+                            $query= $conn->query("SELECT Note FROM appartamenti  WHERE IdAppartamento=1");
+                            if($query->num_rows>0){
+                                while($row =$query->fetch_assoc()){
+                                    echo ''.$row['Note'].'';
+                                }
+                            } 
+                        ?>
+                        </p>
+                        <p class="card-text">
+                        <?php $conn=Connettiti();
+                            $query= $conn->query("SELECT PrezzoGiorno FROM appartamenti  WHERE IdAppartamento=1");
+                            if($query->num_rows>0){
+                                while($row =$query->fetch_assoc()){
+                                    echo 'prezzo giornaliero: '.$row['PrezzoGiorno'].'€';
+                                }
+                            } 
+                        ?>
+                        </p>
+                        <a href="/information.php?IdAppartamento=1" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>
+                    </div>
+                </div>
+            </div>                                                                                                 
+        </div>
+   </div>
 <script>
 $(function() {
   $('input[name="daterange"]').daterangepicker({
