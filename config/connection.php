@@ -1,7 +1,7 @@
 <?php
-//if(!defined('myconn')){
-    //exit('Non puoi accedere a questa pagina');
-//}
+if(!defined('myconn')){
+    exit('Non puoi accedere a questa pagina');
+}
 function Connettiti(){
     $hostname="localhost";
     $username="relpc";

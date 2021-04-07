@@ -1,8 +1,10 @@
 <?php
+define('myconn', TRUE);
 include_once 'config/connection.php';
 session_start();
 $_SESSION['current_page']="index";
 include 'template/template.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +13,7 @@ include 'template/template.php';
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HOME PAGE</title>
-    <link rel="stylesheet" href="css/styleindex.css">
+    <link rel="stylesheet" href="css/style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
@@ -60,12 +62,27 @@ include 'template/template.php';
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Quartiere:</label>
                                     <select id="inputState" class="form-select">
+                                    <?php $conn=Connettiti();
+                                          $query= $conn->query("SELECT Nome FROM quartieri ORDER BY Nome ASC");
+                                          if($query->num_rows>0){
+                                              while($row =$query->fetch_assoc()){
+                                                  echo '<option>'.$row['Nome'].'</option>';
+                                              }
+                                          }
+                                    ?>
                                     </select>
                                     </div>
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Categoria:</label>
                                     <select id="inputState" class="form-select">
-                                        <option>...</option>
+                                    <?php $conn=Connettiti();
+                                          $query= $conn->query("SELECT Categoria FROM categorie ORDER BY Categoria ASC");
+                                          if($query->num_rows>0){
+                                              while($row =$query->fetch_assoc()){
+                                                  echo '<option>'.$row['Categoria'].'</option>';
+                                              }
+                                          } 
+                                    ?>
                                     </select>
                                     </div>
                                     <div class="col-md-4">
@@ -315,5 +332,6 @@ $(function() {
   });
 });
 </script>
+<?php include ("../template/footer.php");?>
 </body>
 </html>
