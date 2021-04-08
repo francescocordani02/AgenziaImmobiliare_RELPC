@@ -74,7 +74,7 @@ function AppartamentiHomepage(){
     $i=1;
     while($i<=6){
         echo '<div class="col-sm m-4">' . PHP_EOL . '<div class="card" style="width:560px;text-align:center;background-color:#171717;color:white;border-radius:0px;border-style:solid; border-width:4px;border-color:#d6ad60;">' . PHP_EOL . '<div class="card-body">';
-        $query= $conn->query("SELECT Immagine FROM immagini INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento WHERE IdAppartamento=$i");
+        $query= $conn->query("SELECT Immagine FROM immagini INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento WHERE IdAppartamento=$i LIMIT 1");
         if($query->num_rows>0){
             while($row =$query->fetch_assoc()){
                 echo '<img src='.$row['Immagine'].' class="card-img-top" alt="img">';
@@ -122,16 +122,94 @@ function CaroselloImmaginiAppartamento($IdAppartamento){
 }
 function InformazioniAppartamento($IdAppartamento){
     global $conn;
-    echo '<div class="col-12">';
-    echo '<ul class="list-group list-group-flush"style="background-color:#171717;color:white;text-align:center;>';
+    echo '<div class="row align-items-center">'. PHP_EOL . '<div class="col"style="margin-left:10px;">';
+    echo '<dl style="color:white;text-align:center;">';
     $query=$conn->query("SELECT Categoria FROM categorie INNER JOIN appartamenti ON IdCategoria=FK_IdCategoria WHERE IdAppartamento=$IdAppartamento");
     if($query->num_rows>0){
         while($row=$query->fetch_assoc()){
-            echo '<li class="list-group-item">Categoria: '.$row['Categoria'].'.</li>';
-
+            echo '<dt style="color:#d6ad60;">Categoria:</dt>';
+            echo '<dd>'.$row['Categoria'].'</dd>';
+            echo '</dl>';
+            echo '</div>';
+            
         }
     }
-    echo '</ul>';
-    echo '</div>';
+    $queryinf=$conn->query("SELECT * FROM appartamenti WHERE IdAppartamento=$IdAppartamento");
+    if($queryinf->num_rows>0){
+        while($row=$queryinf->fetch_assoc()){
+            
+            
+            /*$fk_quartiere =$row['FK_IdQuartiere'];
+            $queryquartiere =$conn->query("SELECT * FROM quartieri INNER JOIN appartamenti ON IdQuartiere=$fk_quartiere");
+            if($queryquartiere->num_rows>0){
+                $row=$queryquartiere->fetch_assoc();
+                echo '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt>Quartiere:</dt>' . PHP_EOL . '<dd>'.$row['Nome'].'</dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>';
+                echo '<div class="col">' . PHP_EOL . '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt>Valutazione:</dt>' . PHP_EOL . '<dd>';
+                $val = $row['Valutazione'];
+                $i=1;
+                while($i<=$val){
+                    echo '<span class="fa fa-star checked"style="color:#d6ad60;"></span>';
+                    $i++;
+                }
+                if($i!=5){
+                    $stelle=1;
+                    while($stelle<=(5-$val)){
+                        echo '<span class="fa fa-star"></span>';
+                        $stelle++;
+                    }
+                }
+                
+            }*/
+            echo '<div class="col">';
+            echo '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt style="color:#d6ad60;">Indirizzo:</dt>' . PHP_EOL . '<dd>'.$row['Indirizzo'].' </dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>';
+            echo '</div>';
+            echo '<div class="row align-items-center"style="margin-left:0px;">'. PHP_EOL . '<div class="col">';
+            echo '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt style="color:#d6ad60;">Superficie:</dt>' . PHP_EOL . '<dd>'.$row['Superficie'].' mq</dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>';
+            echo '<div class="col">' . PHP_EOL . '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt style="color:#d6ad60;">Numero camere:</dt>' . PHP_EOL . '<dd>'.$row['NumeroCamere'].' </dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>' . PHP_EOL . '</div>';
+            echo '<div class="row align-items-center"style="margin-left:0px;">'. PHP_EOL . '<div class="col">';
+            echo '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt style="color:#d6ad60;">Posti letto:</dt>' . PHP_EOL . '<dd>'.$row['PostiLetto'].'</dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>';
+            echo '<div class="col">' . PHP_EOL . '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt style="color:#d6ad60;">Parcheggi:</dt>' . PHP_EOL . '<dd>'.$row['Parcheggio'].'</dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>' . PHP_EOL . '</div>';
+            echo '<div class="row align-items-center"style="margin-left:0px;">'. PHP_EOL . '<div class="col">';
+            echo '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt style="color:#d6ad60;">Descrizione:</dt>' . PHP_EOL . '<dd>'.$row['Note'].'</dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>' . PHP_EOL . '</div>';
+            echo '<div class="row align-items-center"style="margin-left:0px;">'. PHP_EOL . '<div class="col">';
+            echo '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt style="color:#d6ad60;">Prezzo Giornaliero:</dt>' . PHP_EOL . '<dd>'.$row['PrezzoGiorno'].' €</dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>' . PHP_EOL . '</div>';
+            echo '<div class="row align-items-center"style="margin-left:0px;">'. PHP_EOL . '<div class="col" style="text-align:center;padding-bottom:50px;padding-top:20px;">';
+            echo '<button type="submit" id="button" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717;">AFFITTA ONLINE</button>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+        }
+    }
+    
+}
+
+function Zona($IdAppartamento){
+    global $conn;
+    $query=$conn->query("SELECT FK_IdQuartiere, Indirizzo FROM appartamenti WHERE IdAppartamento=$IdAppartamento");
+    if($query->num_rows>0){
+        while($row=$query->fetch_assoc()){
+            $fk_quartiere = $row['FK_IdQuartiere'];
+            $indirizzo =$row['Indirizzo'];
+           
+            $queryquartiere =$conn->query("SELECT * FROM quartieri INNER JOIN appartamenti ON IdQuartiere=$fk_quartiere");
+                if($queryquartiere->num_rows>0){
+                    $row=$queryquartiere->fetch_assoc();
+                    echo ' <p class="card-text"style="color:white;padding-top:10px;"">'.$indirizzo. ', ' .$row['Nome'].'.</p>';
+                    $val = $row['Valutazione'];
+                    $i=1;
+                    echo '<span style="color:white;">Valutazione quartiere: </span>';
+                    while($i<=$val){
+                        
+                        echo '<span class="fa fa-star checked"style="color:#d6ad60;"></span>';
+                        $i++;
+                    }
+                    if($i!=5){
+                        $stelle=1;
+                        while($stelle<=(5-$val)){
+                            echo '<span class="fa fa-star"style="color:white;"></span>';
+                            $stelle++;
+                        }
+                    }
+                    
+                }
+        }
+    }
 }
 ?>
