@@ -1,15 +1,17 @@
 <?php
-    $_SESSION['current_page']="registrazione";
-    include ("../template/template.php");
     define('mydal', TRUE);
     include '../config/dal.php';
+    session_start();
+    $_SESSION['current_page']="registrazione";
 ?>
 
 <html lang="it"><head>
+    <?php include '../template/header.php'; ?>
     <title>Registrazione</title>
 </head>
 <body style="background-color:#171717">
 <div class="content">
+    <?php include '../template/navbar.php'; ?>
     <div id="registrazione">
         <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">
@@ -29,7 +31,7 @@
                         }else{
                     ?>
                         <form id="login-form" class="row g-3" action="" method="POST"style="border-style:solid; border-width:4px;border-color:#d6ad60;color:white;">
-                            <h3 class="text-center text-info"style="padding-bottom:25px;">REGISTRAZIONE</h3>
+                        <h3 style="text-align:center; color:white;padding-bottom:10px;">REGISTRAZIONE</h3>
                             <div class="col-md-6">
                                 <label for="nome" class="form-label">Nome (solo lettere)*: </label>
                                 <input type="text" class="form-control" name="nome" id="nome" pattern="[A-Za-z]+" required >
@@ -44,7 +46,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="telefono" class="form-label">Telefono (solo numeri)*:</label>
-                                <input type="tel" name="telefono" id="telefono" class="form-control" required>
+                                <input type="number" name="telefono" id="telefono" class="form-control" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="email" class="form-label">Email*:</label>
