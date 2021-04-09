@@ -1,20 +1,21 @@
 <?php
-session_start();
-$_SESSION['current_page'] = "view-apartments";
-include("../template/template.php");
 define('mydal', TRUE);
 include '../config/dal.php';
+session_start();
+$_SESSION['current_page'] = "view-apartments";
 ?>
 <!DOCTYPE html>
 <html lang="it">
 
 <head>
   <title>View Rent</title>
-  <script src="../js/scriptpaginazione.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
+  <?php include '../template/header.php'; ?>
+  <te></te>
+</head>
+
 <body style="background-color: #171717;">
   <div class="content">
+    <?php include '../template/navbar.php'; ?>
     <h3 class="titolo">Lista appartamenti</h3>
     <div class="container">
       <table class="table" style="color:white; background-color:#171717; border:2px solid #d6ad60;">
@@ -33,13 +34,14 @@ include '../config/dal.php';
         </thead>
         <tbody>
           <?php
-            $tabella = OttieniAppartamenti();
-            echo $tabella;
+          $tabella = OttieniAppartamenti();
+          echo $tabella;
           ?>
         </tbody>
-        </table>
+      </table>
     </div>
   </div>
-  <?php include("../template/footer.php"); ?>
+  <?php include '../template/footer.php'; ?>
 </body>
+
 </html>

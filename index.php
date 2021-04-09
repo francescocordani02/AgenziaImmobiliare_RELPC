@@ -3,17 +3,15 @@ define('mydal', TRUE);
 include_once 'config/dal.php';
 session_start();
 $_SESSION['current_page']="index";
-include 'template/template.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php include 'template/header.php';?>
     <title>HOME PAGE</title>
 </head>
 <body>
+    <?php include 'template/navbar.php'; ?>
    <div class="container-fluid"style="background-color:#171717">
         <div class="row">
             <div class="col-sm-8 m-3">
@@ -51,12 +49,13 @@ include 'template/template.php';
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Quartiere:</label>
                                     <select id="inputState" class="form-select">
+                                        <?php SelezionaQuartieri(); ?>
                                     </select>
                                     </div>
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Categoria:</label>
                                     <select id="inputState" class="form-select">
-                                        <option>...</option>
+                                        <?php SelezionaCategorie(); ?>
                                     </select>
                                     </div>
                                     <div class="col-md-4">
@@ -151,7 +150,7 @@ include 'template/template.php';
                         <div class="card-body">
                             <h5 class="card-title"style="color:white;">PUBBLICA UN ANNUNCIO</h5>
                             <p class="card-text"style="color:white;">Devi affittare un tuo immobile? Richiedi all'agenzia che valuterà la tua richiesta.</p>
-                            <a href="#" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">PUBBLICA</a>
+                            <a href="#" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">RICHIEDI</a>
                         </div>
                     </div>
                 </div>

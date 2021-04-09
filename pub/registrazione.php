@@ -1,15 +1,17 @@
 <?php
-    $_SESSION['current_page']="registrazione";
-    include ("../template/template.php");
     define('mydal', TRUE);
     include '../config/dal.php';
+    session_start();
+    $_SESSION['current_page']="registrazione";
 ?>
 
 <html lang="it"><head>
+    <?php include '../template/header.php'; ?>
     <title>Registrazione</title>
 </head>
 <body style="background-color:#171717">
 <div class="content">
+    <?php include '../template/navbar.php'; ?>
     <div id="registrazione">
         <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">
