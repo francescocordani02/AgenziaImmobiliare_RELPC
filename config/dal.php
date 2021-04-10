@@ -73,11 +73,11 @@ function AppartamentiHomepage(){
     global $conn;
     $i=1;
     while($i<=6){
-        echo '<div class="col-sm m-4">' . PHP_EOL . '<div class="card" style="width:560px;text-align:center;background-color:#171717;color:white;border-style:solid; border-width:4px;border-color:#d6ad60;">' . PHP_EOL . '<div class="card-body">';
+        echo '<div class="col-sm m-4">' . PHP_EOL . '<div class="card" style="width:560px;text-align:center;background-color:#171717;color:white;border-style:solid; border-width:4px;border-color:#d6ad60;border-radius:0px;">' . PHP_EOL . '<div class="card-body">';
         $query= $conn->query("SELECT Immagine, Categoria, Note, PrezzoGiorno FROM immagini INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento INNER JOIN categorie ON FK_IdCategoria=IdCategoria WHERE IdAppartamento=$i LIMIT 1");
         if($query->num_rows>0){
             while($row =$query->fetch_assoc()){
-                echo '<img src='.$row['Immagine'].' class="card-img-top" alt="img">';
+                echo '<img src='.$row['Immagine'].' class="card-img-top" alt="img"style="height:300px">';
                 echo '<h5 class="card-title"style="padding-top:15px;">'.$row['Categoria'].'</h5>';
                 echo '<p class="card-text">'.$row['Note'].'</p>' . PHP_EOL . '<p class="card-text">Prezzo giornaliero: € '.$row['PrezzoGiorno'].'</p>';
             }
@@ -152,11 +152,9 @@ function InformazioniAppartamento($IdAppartamento){
             echo '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt style="color:#d6ad60;">Posti letto:</dt>' . PHP_EOL . '<dd>'.$row['PostiLetto'].'</dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>';
             echo '<div class="col">' . PHP_EOL . '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt style="color:#d6ad60;">Parcheggi:</dt>' . PHP_EOL . '<dd>'.$row['Parcheggio'].'</dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>' . PHP_EOL . '</div>';
             echo '<div class="row align-items-center"style="margin-left:0px;">'. PHP_EOL . '<div class="col">';
-            echo '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt style="color:#d6ad60;">Descrizione:</dt>' . PHP_EOL . '<dd>'.$row['Note'].'</dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>' . PHP_EOL . '</div>';
-            echo '<div class="row align-items-center"style="margin-left:0px;">'. PHP_EOL . '<div class="col">';
             echo '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt style="color:#d6ad60;">Prezzo Giornaliero:</dt>' . PHP_EOL . '<dd>'.$row['PrezzoGiorno'].' €</dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>' . PHP_EOL . '</div>';
             echo '<div class="row align-items-center"style="margin-left:0px;">'. PHP_EOL . '<div class="col" style="text-align:center;padding-bottom:50px;padding-top:20px;">';
-            echo '<button type="submit" id="button" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717;">AFFITTA ONLINE</button>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+            echo '<button type="submit" id="button" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717;margin-top:12px;">AFFITTA ONLINE</button>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
             
         }
     }
@@ -184,6 +182,17 @@ function Zona($IdAppartamento){
                     $stelle++;
                 }
             }
+        }
+    }
+}
+
+function Descrizione($IdAppartamento){
+    global $conn;
+    $query=$conn->query("SELECT NomeApp,Note FROM appartamenti WHERE IdAppartamento =$IdAppartamento");
+    if($query->num_rows>0){
+        while($row=$query->fetch_assoc()){
+            echo '<h1 style="text-transform:uppercase;color:#d6ad60;">'.$row['NomeApp'].'</h1>';
+            echo '<h4>'.$row['Note'].'</h4>';
         }
     }
 }

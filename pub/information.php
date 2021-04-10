@@ -24,11 +24,13 @@ $IdAppartamento = $_GET['IdAppartamento'];
                 <div class="col-sm m-4">
                     <div class="container" style="border-style:solid; border-width:4px;border-color:#d6ad60;background-color:#171717;">
                         <div class="row">
-                            <div class="col-8">
-                                <h1 style="text-align:center; padding-top:50px;color:white;font-size:17px;padding-left:40px;">INFORMAZIONI APPARTAMENTO</h1>
+                            <div class="col-12">
+                                <h1 style="text-align:center; padding-top:50px;color:white;font-size:25px;">INFORMAZIONI APPARTAMENTO</h1>
                             </div>
-                            <div class="col-4" style="padding-top:20px;">
-                                <img src="../image/logo.gif" class="rounded" alt="..." style="height:120px;margin-left:20px;padding-bottom:35px;">
+                        </div>
+                        <div class="row">
+                            <div class="col-12" style="padding-top:20px;">
+                                <img src="../image/logo.gif" class="rounded mx-auto d-block" alt="..." style="height:120px;margin-top:-10px;">
                             </div>
                         </div>
                         <?php InformazioniAppartamento($IdAppartamento); ?>
@@ -41,9 +43,8 @@ $IdAppartamento = $_GET['IdAppartamento'];
         <div class="row">
             <div class="col-sm-8 m-4">
                 <div class="card" style="background-color:#171717; color:white;">
-                    <div class="card-body" style="padding-top:40px;">
-                        <h1>CERCHI APPARTAMENTI PER BREVI PERIODI DI TEMPO?</h1>
-                        <h3>La soluzione siamo noi.</h3>
+                    <div class="card-body" style="padding-top:0px;">
+                        <?php Descrizione($IdAppartamento); ?>
                     </div>
                 </div>
             </div>
