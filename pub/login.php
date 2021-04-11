@@ -9,7 +9,6 @@ $_SESSION['current_page'] = "login";
 
 <head>
     <?php include '../template/header.php'; ?>
-    <title>Login</title>
 </head>
 
 <body style="background-color:#171717">

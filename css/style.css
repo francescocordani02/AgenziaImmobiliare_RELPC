@@ -125,8 +125,39 @@ html {
     color: #d6ad60;
 }
 
+.container1 {
+    height: 200px;
+    flex-direction: column;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    border: 4px solid #d6ad60;
+}
+
+#data,
+#allData {
+    display: none;
+}
+
+#divover {
+    width: 260px;
+}
+
+#divleft {
+    float: left;
+    width: 100px;
+}
+
+#divright {
+    margin-left: 3px;
+    width: 157px;
+    float: right;
+}
+
 @media only screen and (max-width:800px) {
-    #data {
+    #date {
         width: 200px;
     }
 }

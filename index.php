@@ -8,13 +8,12 @@ $_SESSION['current_page']="index";
 <html lang="en">
 <head>
     <?php include 'template/header.php';?>
-    <title>HOME PAGE</title>
 </head>
 <body>
     <?php include 'template/navbar.php'; ?>
    <div class="container-fluid"style="background-color:#171717">
         <div class="row">
-            <div class="col-sm-8 m-3">
+            <div class="col-sm-8 m-4">
                 <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
@@ -32,7 +31,7 @@ $_SESSION['current_page']="index";
                     </div>
                 </div>
             </div>
-            <div class="col-sm m-3">
+            <div class="col-sm m-4">
                 <div class="container"style="border-style:solid; border-width:4px;border-color:#d6ad60;">
                     <div class="row">
                         <div class="col-8">
@@ -49,13 +48,13 @@ $_SESSION['current_page']="index";
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Quartiere:</label>
                                     <select id="inputState" class="form-select">
-                                        <?php SelezionaQuartieri(); ?>
+                                    <?php SelezionaQuartieri(); ?>
                                     </select>
                                     </div>
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Categoria:</label>
                                     <select id="inputState" class="form-select">
-                                        <?php SelezionaCategorie(); ?>
+                                    <?php SelezionaCategorie();?>
                                     </select>
                                     </div>
                                     <div class="col-md-4">
@@ -121,7 +120,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-12">
                                     <label for="daterange" class="form-label">Range Date:</label>
-                                    <input type="text" id="data"name="daterange" value="<?php echo "date ('d/m/Y')";?>-<?php echo "date ('d/m/Y')";?>" style="width:370px;text-align:center;"/>
+                                    <input type="text" id="date"name="daterange" value="<?php echo "date ('d/m/Y')";?>-<?php echo "date ('d/m/Y')";?>" style="width:370px;text-align:center;"/>
                                     </div>
                                     <div class="col-12">
                                     <button type="submit" id="button" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">RICERCA</button>
@@ -136,7 +135,7 @@ $_SESSION['current_page']="index";
    </div>
    <div class="container-fluid"style="background-color:#171717">
         <div class="row">
-            <div class="col-sm-8 m-3">
+            <div class="col-sm-8 m-4">
                 <div class="card"style="background-color:#171717; color:white;" >
                     <div class="card-body"style="padding-top:40px;">
                         <h1>CERCHI APPARTAMENTI PER BREVI PERIODI DI TEMPO?</h1>
@@ -144,12 +143,12 @@ $_SESSION['current_page']="index";
                     </div>
                 </div>
             </div>
-            <div class="col-sm m-3">
+            <div class="col-sm m-4">
                 <div class="container" style="border-style:solid; border-width:4px;border-color:#d6ad60;">
                     <div class="card text-center"style="padding-top:13px; background-color:#171717;">
                         <div class="card-body">
                             <h5 class="card-title"style="color:white;">PUBBLICA UN ANNUNCIO</h5>
-                            <p class="card-text"style="color:white;">Devi affittare un tuo immobile? Richiedi all'agenzia che valuterà la tua richiesta.</p>
+                            <p class="card-text"style="color:white;">Immobile da affittare? Invia una richiesta di pubblicazione.</p>
                             <a href="#" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">RICHIEDI</a>
                         </div>
                     </div>
@@ -159,7 +158,7 @@ $_SESSION['current_page']="index";
    </div>
    <div class="container-fluid" style="background-color:#171717";>
         <div class="row">
-            <?php AppartamentiHomepage();?>                                                                                              -->
+            <?php AppartamentiHomepage();?>                                                                                               
         </div>
    </div>
 <script>
@@ -171,6 +170,6 @@ $(function() {
   });
 });
 </script>
-<?php include("template/footer.php"); ?>
+<?php include ("template/footer.php");?>
 </body>
 </html>

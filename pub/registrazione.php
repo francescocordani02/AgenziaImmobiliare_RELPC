@@ -7,7 +7,6 @@
 
 <html lang="it"><head>
     <?php include '../template/header.php'; ?>
-    <title>Registrazione</title>
 </head>
 <body style="background-color:#171717">
 <div class="content">
