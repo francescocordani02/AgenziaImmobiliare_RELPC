@@ -154,7 +154,7 @@ function InformazioniAppartamento($IdAppartamento){
             echo '<div class="row align-items-center"style="margin-left:0px;">'. PHP_EOL . '<div class="col">';
             echo '<dl style="color:white;text-align:center;">' . PHP_EOL . '<dt style="color:#d6ad60;">Prezzo Giornaliero:</dt>' . PHP_EOL . '<dd>'.$row['PrezzoGiorno'].' €</dd>' . PHP_EOL . '</dl>' . PHP_EOL. '</div>' . PHP_EOL . '</div>';
             echo '<div class="row align-items-center"style="margin-left:0px;">'. PHP_EOL . '<div class="col" style="text-align:center;padding-bottom:50px;padding-top:20px;">';
-            echo '<button type="submit" id="button" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717;margin-top:12px;">AFFITTA ONLINE</button>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+            echo '<button type="submit" id="button" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717;margin-top:16px;margin-bottom:16px;">AFFITTA ONLINE</button>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
             
         }
     }
@@ -166,10 +166,10 @@ function Zona($IdAppartamento){
     if($query->num_rows>0){
         while($row=$query->fetch_assoc()){
             $indirizzo =$row['Indirizzo'];
-            echo ' <p class="card-text"style="color:white;padding-top:10px;"">'.$indirizzo. ', ' .$row['Nome'].'.</p>';
+            echo ' <h1 class="card-text"style="color:white;padding-top:10px;font-size:17px;">'.$indirizzo. ', ' .$row['Nome'].'.</h1>';
             $val = $row['Valutazione'];
             $i=1;
-            echo '<span style="color:white;">Valutazione quartiere: </span>';
+            echo '<span style="color:white;"><h1 style="font-size:17px;">Valutazione quartiere: </h1></span>';
             while($i<=$val){
                 
                 echo '<span class="fa fa-star checked"style="color:#d6ad60;"></span>';
@@ -186,13 +186,59 @@ function Zona($IdAppartamento){
     }
 }
 
-function Descrizione($IdAppartamento){
+function Descrizione($IdAppartamento)
+{
     global $conn;
-    $query=$conn->query("SELECT NomeApp,Note FROM appartamenti WHERE IdAppartamento =$IdAppartamento");
+    $query = $conn->query("SELECT NomeApp, Note FROM appartamenti WHERE IdAppartamento =$IdAppartamento");
+    if ($query->num_rows > 0) {
+        $row = $query->fetch_assoc();
+        return $row;
+    } else {
+        return null;
+    }
+}
+
+function Disponibilità($IdAppartamento)
+{
+    echo '<div class="row">' . PHP_EOL . '<div class="col-12">';
+    global $conn;
+    $query = $conn->query("SELECT dpc,NomeApp FROM appartamenti WHERE IdAppartamento=$IdAppartamento");
+    if ($query->num_rows > 0) {
+        while($row = $query->fetch_assoc()){
+            if ($row['dpc'] == 0) {
+                $nome = strtolower($row['NomeApp']);
+                echo '<h1 style="font-size:18px; color:white;text-align:center;padding-top:20px;">Al momento non risulta nessuna prenotazione in carico sull\''.$nome.'. <br>L\'immobile è sempre disponibile dalla giornata di oggi.</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+            } else if ($row['dpc'] == 1) {
+                $nome = strtolower($row['NomeApp']);
+                $querycont = $conn->query("SELECT COUNT(IdPrenotazione) AS tot FROM prenotazioni WHERE FK_IdAppartamento=$IdAppartamento");
+                if($querycont->num_rows>0){
+                    $rowcont=$querycont->fetch_assoc();
+                    echo '<h1 style="font-size:18px; color:white;text-align:center;padding-top:20px;">';if($rowcont['tot']==1){echo 'Al momento risulta 1 prenotazione';}else{echo 'Al momento risultano '.$rowcont['tot'].' prenotazioni';}; echo' in carico sull\''.$nome.'. <br>Le giornate in cui l\'immobile non è disponibile sono le seguenti:</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+                }
+               
+                $query2 = $conn->query("SELECT DataInizio, DataFine FROM prenotazioni WHERE FK_IdAppartamento =$IdAppartamento ");
+                if ($query2->num_rows > 0) {
+                    while ($row2 = $query2->fetch_assoc()) {
+                        $inizio = date("d/m/Y",strtotime($row2['DataInizio']));
+                        $fine = date("d/m/Y",strtotime($row2['DataFine']));
+                        echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;">- Dal '.$inizio. ' al '.$fine.'.</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+                    }
+                }
+            }
+        }
+    }
+}
+
+function Proprietario($IdAppartamento){
+    
+    global $conn;
+    $query = $conn->query("SELECT Nome, Cognome, Telefono, Email FROM utenti INNER JOIN appartamenti ON IdUtente=FK_IdUtenti WHERE IdAppartamento = $IdAppartamento");
     if($query->num_rows>0){
+        echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="font-size:18px;color:white;text-align:center;padding-top:20px;">Informazioni relative al proprietario dell\'immobile:</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
         while($row=$query->fetch_assoc()){
-            echo '<h1 style="text-transform:uppercase;color:#d6ad60;">'.$row['NomeApp'].'</h1>';
-            echo '<h4>'.$row['Note'].'</h4>';
+            echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;">- Nome: '.$row['Nome'].'.</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+            echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;">- Cognome: '.$row['Cognome'].'.</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+            echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;padding-bottom:20px;">- ☏: +39 '.$row['Telefono'].'</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
         }
     }
 }

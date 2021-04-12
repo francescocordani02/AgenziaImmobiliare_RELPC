@@ -15,3 +15,5 @@
 <script  type = "text/javascript"  src ="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <link rel = "stylesheet" type = "text/css"  href ="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script type="text/javascript" src=<?php if($currentpage=="information"){echo "../js/googlemap.js";} ?>></script>
+<title>RELPC</title>
