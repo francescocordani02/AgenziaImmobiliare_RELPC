@@ -17,16 +17,16 @@ $_SESSION['current_page']="index";
                 <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                        <img src="image/carosello1.jpg" class="d-block w-100" alt="...">
+                        <img src="img/carosello1.jpg" class="d-block w-100" alt="...">
                         </div>
                         <div class="carousel-item">
-                        <img src="image/carosello2.jpg" class="d-block w-100" alt="...">
+                        <img src="img/carosello2.jpg" class="d-block w-100" alt="...">
                         </div>
                         <div class="carousel-item">
-                        <img src="image/carosello3.jpg" class="d-block w-100" alt="...">
+                        <img src="img/carosello3.jpg" class="d-block w-100" alt="...">
                         </div>
                         <div class="carousel-item">
-                        <img src="image/carosello4.jpg" class="d-block w-100" alt="...">
+                        <img src="img/carosello4.jpg" class="d-block w-100" alt="...">
                         </div>
                     </div>
                 </div>
@@ -38,42 +38,28 @@ $_SESSION['current_page']="index";
                             <h1 style="text-align:center; padding-top:23px;color:white;">AGENZIA IMMOBILIARE RELPC</h1>
                         </div>
                         <div class="col-4"style="padding-top:20px;">
-                        <img src="image/logo.gif" class="rounded" alt="..."style="width=170px;height:170px;margin-left:-10px;padding-bottom:30px;">
+                        <img src="img/logo.gif" class="rounded" alt="..."style="width=170px;height:170px;margin-left:-10px;padding-bottom:30px;">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="container">
-                                <form class="row g-3" style="text-align:center;color:white;padding-bottom:23px;padding-top:5px;">
+                                <form class="row g-3" action="pub/research.php" style="text-align:center;color:white;padding-bottom:23px;padding-top:5px;">
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Quartiere:</label>
-                                    <select id="inputState" class="form-select">
-                                    <?php $conn=Connettiti();
-                                          $query= $conn->query("SELECT Nome FROM quartieri ORDER BY Nome ASC");
-                                          if($query->num_rows>0){
-                                              while($row =$query->fetch_assoc()){
-                                                  echo '<option>'.$row['Nome'].'</option>';
-                                              }
-                                          }
-                                    ?>
+                                    <select id="inputState" class="form-select" name="Quartiere" >
+                                    <?php SelezionaQuartieri(); ?>
                                     </select>
                                     </div>
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Categoria:</label>
-                                    <select id="inputState" class="form-select">
-                                    <?php $conn=Connettiti();
-                                          $query= $conn->query("SELECT Categoria FROM categorie ORDER BY Categoria ASC");
-                                          if($query->num_rows>0){
-                                              while($row =$query->fetch_assoc()){
-                                                  echo '<option>'.$row['Categoria'].'</option>';
-                                              }
-                                          } 
-                                    ?>
+                                    <select id="inputState" class="form-select" name="Categoria" >
+                                    <?php SelezionaCategorie();?>
                                     </select>
                                     </div>
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Posti Letto:</label>
-                                    <select id="inputState" class="form-select">
+                                    <select id="inputState" class="form-select" name="PostiLetto" >
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -85,7 +71,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-4">
                                         <label for="inputState" class="form-label">Affitto min:</label>
-                                        <select id="inputState" class="form-select">
+                                        <select id="inputState" class="form-select" name="AffittoMin" >
                                             <option>40</option>
                                             <option>60</option>
                                             <option>80</option>
@@ -96,7 +82,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Affitto max:</label>
-                                    <select id="inputState" class="form-select">
+                                    <select id="inputState" class="form-select" name="AffittoMax" >
                                         <option>160</option>
                                         <option>180</option>
                                         <option>200</option>
@@ -107,7 +93,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Posti auto:</label>
-                                    <select id="inputState" class="form-select">
+                                    <select id="inputState" class="form-select" name="PostiAuto" >
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -116,7 +102,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-6">
                                     <label for="inputState" class="form-label">Superficie min:</label>
-                                    <select id="inputState" class="form-select">
+                                    <select id="inputState" class="form-select" name="SuperficieMin">
                                         <option>60</option>
                                         <option>80</option>
                                         <option>100</option>
@@ -125,7 +111,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-6">
                                     <label for="inputState" class="form-label">Supeficie max:</label>
-                                    <select id="inputState" class="form-select">
+                                    <select id="inputState" class="form-select" name="SuperficieMax">
                                         <option>140</option>
                                         <option>160</option>
                                         <option>180</option>
@@ -134,7 +120,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-12">
                                     <label for="daterange" class="form-label">Range Date:</label>
-                                    <input type="text" id="data"name="daterange" value="<?php echo "date ('d/m/Y')";?>-<?php echo "date ('d/m/Y')";?>" style="width:370px;text-align:center;"/>
+                                    <input type="text" id="date"name="daterange" value="<?php echo "date ('d/m/Y')";?>-<?php echo "date ('d/m/Y')";?>" style="width:370px;text-align:center;"/>
                                     </div>
                                     <div class="col-12">
                                     <button type="submit" id="button" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">RICERCA</button>
@@ -163,7 +149,7 @@ $_SESSION['current_page']="index";
                         <div class="card-body">
                             <h5 class="card-title"style="color:white;">PUBBLICA UN ANNUNCIO</h5>
                             <p class="card-text"style="color:white;">Immobile da affittare? Invia una richiesta di pubblicazione.</p>
-                            <a href="#" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">PUBBLICA</a>
+                            <a href="<?php if(isset($_SESSION['Username']) && $_SESSION['IsAdmin']==0){echo 'private/new-request.php';}else{echo 'pub/login.php';}?>" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">RICHIEDI</a>
                         </div>
                     </div>
                 </div>

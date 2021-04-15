@@ -3,7 +3,7 @@ if(!defined('myconn')){
     exit('Non puoi accedere a questa pagina');
 }
 function Connettiti(){
-    $hostname="localhost";
+    $hostname="127.0.0.1";
     $username="relpc";
     $password="";
     $db_name="relpc";
@@ -14,8 +14,9 @@ function Connettiti(){
     }
     return $conn;
 }
+
 class connection {
-    private $host = 'localhost';
+    private $host = '127.0.0.1';
     private $dbName = 'relpc';
     private $user = 'relpc';
     private $pass = '';
@@ -30,5 +31,4 @@ class connection {
         }
     }
 }
-?>
 ?>
