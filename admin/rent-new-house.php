@@ -3,7 +3,7 @@ define('mydal', TRUE);
 include '../config/dal.php';
 session_start();
 if (!isset($_SESSION['IsAdmin']) || $_SESSION['IsAdmin'] != 1) {
-    exit("Non puoi accedere a questa pagina");
+    header("location: ../login.php");
 }
 $_SESSION['current_page'] = "rent-your-house";
 ?>
@@ -25,7 +25,6 @@ $_SESSION['current_page'] = "rent-your-house";
             <div class="row">
                 <div class="col-sm m-4">
                     <div class="container" style="border-style:solid; border-width:4px;border-color:#d6ad60;">
-
                         <div class="row">
                             <div class="col-12">
                                 <div class="container">
@@ -91,12 +90,14 @@ $_SESSION['current_page'] = "rent-your-house";
                                             <label for="inputState" class="form-label">Longitudine:</label>
                                             <input type="number" name="long" step=0.01 id="username" class="form-control" required>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-12">
                                             <label for="inputState" class="form-label">Nome appartamento:</label>
                                             <input type="text" name="titolo" id="username" class="form-control" required>
                                         </div>
-                                        <label for="inputState" class="form-label">Immagini:</label>
-                                        <input type="file" name="my_image[]" multiple>
+                                        <div class="col-12 ">
+                                            <label for="inputState" class="form-label">Immagini:</label>
+                                            <input type="file" name="my_image[]" multiple>
+                                        </div>
                                         <div class="col-12">
                                             <button type="submit" id="button" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">AFFITTA</button>
                                         </div>

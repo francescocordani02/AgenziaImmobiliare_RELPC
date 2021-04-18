@@ -5,6 +5,8 @@ session_start();
 $_SESSION['current_page'] = "information";
 $IdAppartamento = $_GET['IdAppartamento'];
 $rowinfo = InformazioniAppartamento($IdAppartamento);
+$_SESSION['IdAppartamento'] = $IdAppartamento;
+$_SESSION['PrezzoGiorno'] = $rowinfo['PrezzoGiorno'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,52 +35,76 @@ $rowinfo = InformazioniAppartamento($IdAppartamento);
                                 <img src="../img/logo.gif" class="rounded mx-auto d-block" alt="..." style="height:180px;margin-top:-10px;">
                             </div>
                         </div>
-                        <div class="row align-items-center"style="font-size:18px;">
+                        <div class="row align-items-center" style="font-size:18px;">
                             <div class="col" style="margin-left:10px;">
                                 <dl style="color:white;text-align:center;">
-                                    <dt style="color:#d6ad60;"><h5>Categoria:</h5></dt>
-                                    <dd><h5><?php echo $rowinfo['Categoria']; ?></h5></dd>
+                                    <dt style="color:#d6ad60;">
+                                        <h5>Categoria:</h5>
+                                    </dt>
+                                    <dd>
+                                        <h5><?php echo $rowinfo['Categoria']; ?></h5>
+                                    </dd>
                                 </dl>
                             </div>
                             <div class="col">
                                 <dl style="color:white;text-align:center;">
-                                    <dt style="color:#d6ad60;"><h5>Superficie:</h5></dt>
-                                    <dd><h5><?php echo $rowinfo['Superficie']; ?>mq</h5></dd>
+                                    <dt style="color:#d6ad60;">
+                                        <h5>Superficie:</h5>
+                                    </dt>
+                                    <dd>
+                                        <h5><?php echo $rowinfo['Superficie']; ?>mq</h5>
+                                    </dd>
                                 </dl>
                             </div>
                         </div>
                         <div class="row align-items-center" style="margin-left:0px;font-size:18px;">
                             <div class="col">
                                 <dl style="color:white;text-align:center;">
-                                    <dt style="color:#d6ad60;"><h5>Numero camere:</h5></dt>
-                                    <dd><h5><?php echo $rowinfo['NumeroCamere']; ?></h5></dd>
+                                    <dt style="color:#d6ad60;">
+                                        <h5>Numero camere:</h5>
+                                    </dt>
+                                    <dd>
+                                        <h5><?php echo $rowinfo['NumeroCamere']; ?></h5>
+                                    </dd>
                                 </dl>
                             </div>
                             <div class="col">
                                 <dl style="color:white;text-align:center;">
-                                    <dt style="color:#d6ad60;"><h5>Posti letto:</h5></dt>
-                                    <dd><h5><?php echo $rowinfo['PostiLetto']; ?></h5></dd>
+                                    <dt style="color:#d6ad60;">
+                                        <h5>Posti letto:</h5>
+                                    </dt>
+                                    <dd>
+                                        <h5><?php echo $rowinfo['PostiLetto']; ?></h5>
+                                    </dd>
                                 </dl>
                             </div>
                         </div>
                         <div class="row align-items-center" style="margin-left:0px;">
-                            
+
                             <div class="col">
                                 <dl style="color:white;text-align:center;">
-                                    <dt style="color:#d6ad60;"><h5>Parcheggi:</h5></dt>
-                                    <dd><h5><?php echo $rowinfo['Parcheggio']; ?></h5></dd>
+                                    <dt style="color:#d6ad60;">
+                                        <h5>Parcheggi:</h5>
+                                    </dt>
+                                    <dd>
+                                        <h5><?php echo $rowinfo['Parcheggio']; ?></h5>
+                                    </dd>
                                 </dl>
                             </div>
                             <div class="col">
                                 <dl style="color:white;text-align:center;">
-                                    <dt style="color:#d6ad60;"><h5>Prezzo Giorno:</h5></dt>
-                                    <dd><h5><?php echo $rowinfo['PrezzoGiorno']; ?> €</h5></dd>
+                                    <dt style="color:#d6ad60;">
+                                        <h5>Prezzo Giorno:</h5>
+                                    </dt>
+                                    <dd>
+                                        <h5><?php echo $rowinfo['PrezzoGiorno']; ?> €</h5>
+                                    </dd>
                                 </dl>
                             </div>
                         </div>
                         <div class="row align-items-center" style="margin-left:0px;">
                             <div class="col" style="text-align:center;padding-bottom:50px;padding-top:30px;">
-                                <button type="submit" id="button" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717;">AFFITTA ONLINE</button>
+                                <a href="../private/scelta-data.php?IdAppartamento=<?php echo $_GET['IdAppartamento'] ?>" type="submit" id="button" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717;">AFFITTA ONLINE</a>
                             </div>
                         </div>
                     </div>

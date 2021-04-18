@@ -156,36 +156,8 @@ html {
     float: right;
 }
 
-.paging-nav {
-    text-align: center;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
-.paging-nav a {
-    margin: auto 1px;
-    text-decoration: none;
-    display: inline-block;
-    padding: 1px 10px;
-    background: #d6ad60;
-    color: white;
-    border-radius: 3px;
-}
-
-.paging-nav .selected-page {
-    background: #d6ad60;
-    font-weight: bold;
-}
-
-.paging-nav {
-    width: 90%;
-    margin: 30px auto;
-    font-size: 16px;
-    text-align: center;
-}
-
 label {
-    color: white;
+    color: #171717;
 }
 
 .container-left {
@@ -228,12 +200,16 @@ label {
 }
 
 .preview-content {
-    width: auto;
-    height: auto;
+    width: inherit;
+    height: 100%;
 }
 
 
 /* inizio checkout */
+
+label {
+    color: white;
+}
 
 * {
     box-sizing: border-box;
@@ -246,7 +222,9 @@ label {
     -ms-flex-wrap: wrap;
     /* IE10 */
     flex-wrap: wrap;
-    margin: 2%;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    justify-content: center;
 }
 
 .column-25 {
@@ -262,9 +240,9 @@ label {
 }
 
 .column-75 {
-    -ms-flex: 75%;
+    -ms-flex: 60%;
     /* IE10 */
-    flex: 75%;
+    flex: 60%;
 }
 
 .column-25,
@@ -273,7 +251,7 @@ label {
     padding: 0 16px;
 }
 
-.container1 {
+.container-checkout {
     background-color: #f2f2f2;
     padding: 5px 20px 15px 20px;
     border: 1px solid lightgrey;
@@ -301,7 +279,7 @@ label {
 
 .btn1 {
     background-color: #d6ad60;
-    color: white;
+    /* color: white; */
     padding: 12px;
     margin: 10px 0;
     border: none;
@@ -326,6 +304,12 @@ span.price {
 
 .btn-color {
     background-color: #d6ad60;
+}
+
+.scelta-data {
+    text-align: center;
+    justify-content: center;
+    padding: 2%;
 }
 
 @media only screen and (max-width:800px) {

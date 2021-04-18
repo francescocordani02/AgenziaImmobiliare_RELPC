@@ -3,7 +3,7 @@ define('mydal', TRUE);
 include_once '../config/dal.php';
 session_start();
 if (!isset($_SESSION['IsAdmin']) || $_SESSION['IsAdmin'] != 1) {
-    exit("Non puoi accedere a questa pagina");
+    header("location: ../login.php");
 }
 $_SESSION['current_page'] = "admin-homepage";
 ?>

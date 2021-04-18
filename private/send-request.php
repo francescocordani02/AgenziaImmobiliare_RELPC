@@ -1,25 +1,26 @@
 <?php
 session_start();
 if (!isset($_SESSION['IsAdmin']) || $_SESSION['IsAdmin'] != 0) {
-  exit("Non puoi accedere a questa pagina");
+  header("location: ../login.php");
 }
 $_SESSION['current_page'] = "confirm-rent-your-house";
 define('mydal', TRUE);
 include '../config/dal.php';
-$titolo = $_POST['titolo'];
-$prezzogiornaliero = $_POST['prezzo-giornaliero'];
+$conn=Connettiti();
+$titolo = mysqli_real_escape_string($conn, $_POST['titolo']);
+$prezzogiornaliero = mysqli_real_escape_string($conn, $_POST['prezzo-giornaliero']);
 $postiauto = $_POST['postiauto'];
 $postiletto = $_POST['postiletto'];
 $ncamere = $_POST['ncamere'];
 $quartiere = $_POST['quartiere'];
 $categoria = $_POST['categoria'];
-$indirizzo = $_POST['indirizzo'];
-$superficie = $_POST['superficie'];
-$note = $_POST['note'];
-$latitudine = $_POST['lat'];
-$longitudine = $_POST['long'];
+$indirizzo = mysqli_real_escape_string($conn, $_POST['indirizzo']);
+$superficie = mysqli_real_escape_string($conn, $_POST['superficie']);
+$note = mysqli_real_escape_string($conn, $_POST['note']);
+$latitudine = mysqli_real_escape_string($conn, $_POST['lat']);
+$longitudine = mysqli_real_escape_string($conn, $_POST['long']);
 $idutente = $_SESSION['IdUtente'];
-print_r($_FILES['my_image']);
+mysqli_close($conn);
 ?>
 <html lang="it">
 

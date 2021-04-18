@@ -49,10 +49,14 @@ $currentpage = $_SESSION['current_page'];
                     echo '<li class="nav-item"><a class="nav-link" href="'.$page.'rent-your-house.php">Nuova richiesta</a></li>' . PHP_EOL . '<li class="nav-item"><a class="nav-link" href="'.$page2.'contacts.php">Contatti</a></li>';
                     }
                 }else{
-                    echo '<li class="nav-item"><a class="nav-link" href="pub/contacts.php">Contatti</a></li>';
+                    if($currentpage!="contacts"){
+                        echo '<li class="nav-item"><a class="nav-link" href="pub/contacts.php">Contatti</a></li>';
+                    }
                 }
             } else {
-                echo '<li class="nav-item"><a class="nav-link" href="contacts.php">Contatti</a></li>';
+                if($currentpage!="contacts"){
+                    echo '<li class="nav-item"><a class="nav-link" href="contacts.php">Contatti</a></li>';
+                }
             }
             ?>
             <form class="form-inline">
