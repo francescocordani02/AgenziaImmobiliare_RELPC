@@ -44,22 +44,22 @@ $_SESSION['current_page']="index";
                     <div class="row">
                         <div class="col-12">
                             <div class="container">
-                                <form class="row g-3" style="text-align:center;color:white;padding-bottom:23px;padding-top:5px;">
+                                <form class="row g-3" action="pub/research.php" style="text-align:center;color:white;padding-bottom:23px;padding-top:5px;">
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Quartiere:</label>
-                                    <select id="inputState" class="form-select">
+                                    <select id="inputState" class="form-select" name="Quartiere" >
                                     <?php SelezionaQuartieri(); ?>
                                     </select>
                                     </div>
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Categoria:</label>
-                                    <select id="inputState" class="form-select">
+                                    <select id="inputState" class="form-select" name="Categoria" >
                                     <?php SelezionaCategorie();?>
                                     </select>
                                     </div>
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Posti Letto:</label>
-                                    <select id="inputState" class="form-select">
+                                    <select id="inputState" class="form-select" name="PostiLetto" >
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -71,7 +71,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-4">
                                         <label for="inputState" class="form-label">Affitto min:</label>
-                                        <select id="inputState" class="form-select">
+                                        <select id="inputState" class="form-select" name="AffittoMin" >
                                             <option>40</option>
                                             <option>60</option>
                                             <option>80</option>
@@ -82,7 +82,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Affitto max:</label>
-                                    <select id="inputState" class="form-select">
+                                    <select id="inputState" class="form-select" name="AffittoMax" >
                                         <option>160</option>
                                         <option>180</option>
                                         <option>200</option>
@@ -93,7 +93,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-4">
                                     <label for="inputState" class="form-label">Posti auto:</label>
-                                    <select id="inputState" class="form-select">
+                                    <select id="inputState" class="form-select" name="PostiAuto" >
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -102,7 +102,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-6">
                                     <label for="inputState" class="form-label">Superficie min:</label>
-                                    <select id="inputState" class="form-select">
+                                    <select id="inputState" class="form-select" name="SuperficieMin">
                                         <option>60</option>
                                         <option>80</option>
                                         <option>100</option>
@@ -111,7 +111,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-6">
                                     <label for="inputState" class="form-label">Supeficie max:</label>
-                                    <select id="inputState" class="form-select">
+                                    <select id="inputState" class="form-select" name="SuperficieMax">
                                         <option>140</option>
                                         <option>160</option>
                                         <option>180</option>
@@ -149,7 +149,7 @@ $_SESSION['current_page']="index";
                         <div class="card-body">
                             <h5 class="card-title"style="color:white;">PUBBLICA UN ANNUNCIO</h5>
                             <p class="card-text"style="color:white;">Immobile da affittare? Invia una richiesta di pubblicazione.</p>
-                            <a href="#" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">RICHIEDI</a>
+                            <a href="<?php if(isset($_SESSION['Username']) && $_SESSION['IsAdmin']==0){echo 'private/rent-your-house.php';}else{echo 'pub/login.php';}?>" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">RICHIEDI</a>
                         </div>
                     </div>
                 </div>

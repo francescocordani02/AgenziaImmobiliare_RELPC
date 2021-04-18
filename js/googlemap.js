@@ -41,7 +41,7 @@ function showAllColleges(allData) {
         contentright.appendChild(strongNomeApp);
 
         var pIndirizzoZona = document.createElement('p');
-        pIndirizzoZona.innerHTML = "<b>Quartiere:</b> " + data.Nome + "\n<b>Indirizzo:</b> " + data.Indirizzo;
+        pIndirizzoZona.innerHTML = "<b>Quartiere:</b> " + data.NomeQuartiere + "\n<b>Indirizzo:</b> " + data.Indirizzo;
         contentright.appendChild(pIndirizzoZona);
 
         var marker = new google.maps.Marker({

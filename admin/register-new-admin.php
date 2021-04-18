@@ -1,17 +1,20 @@
 <?php
 define('mydal', TRUE);
-include '../config/dal.php';
+include_once '../config/dal.php';
 session_start();
-$_SESSION['current_page'] = "registrazione";
+if (!isset($_SESSION['IsAdmin']) || $_SESSION['IsAdmin'] != 1) {
+    exit("Non puoi accedere a questa pagina");
+}
+$_SESSION['current_page'] = "register_admin";
 ?>
-
+<!DOCTYPE html>
 <html lang="it">
 
 <head>
     <?php include '../template/header.php'; ?>
 </head>
 
-<body style="background-color:#171717">
+<body style="background-color: #171717;">
     <div class="content">
         <?php include '../template/navbar.php'; ?>
         <div id="registrazione">
@@ -29,11 +32,11 @@ $_SESSION['current_page'] = "registrazione";
                                 $indirizzo = $_POST['indirizzo'];
                                 $dob = $_POST['dob'];
                                 $telefono = $_POST['telefono'];
-                                Registrazione($nome, $cognome, $username, $email, $password, $indirizzo, $dob, $telefono);
+                                RegistrazioneNuovoAccountAdmin($nome, $cognome, $username, $email, $password, $indirizzo, $dob, $telefono);
                             } else {
                             ?>
                                 <form id="login-form" class="row g-3" action="" method="POST" style="border-style:solid; border-width:4px;border-color:#d6ad60;color:white;">
-                                    <h3 style="text-align:center; color:white;padding-bottom:10px;">REGISTRAZIONE</h3>
+                                    <h3 style="text-align:center; color:white;padding-bottom:10px;">REGISTRAZIONE ADMIN</h3>
                                     <div class="col-md-6">
                                         <label for="nome" class="form-label">Nome (solo lettere)*: </label>
                                         <input type="text" class="form-control" name="nome" id="nome" pattern="[A-Za-z]+" required>
@@ -66,13 +69,11 @@ $_SESSION['current_page'] = "registrazione";
                                         <label for="password" class="form-label">Password*:</label>
                                         <input type="password" name="password" id="password" class="form-control" required>
                                     </div>
-                                    <div class="form-group" style="text-align:center;padding-top:30px;">
-                                        <label for="remember-me" class="text-spazio text-info">*: campi richiesti</label><br><br>
+                                    <div class="form-group" style="text-align:center;padding-top:20px;">
+                                        <label for="remember-me" class="text-spazio text-info"></label><br><br>
                                         <input type="submit" name="submit" class="btn btn-info btn-md" value="Registrati">
                                     </div>
-                                    <div id="register-link" style="text-align:center;padding-top:15px;">
-                                        <p class="text-info">Già registrato? <a href="login.php" style="color:#d6ad60;">Accedi qui</a></p>
-                                    </div>
+                                    <div id="register-link" style="text-align:center;padding-top:15px;"></div>
                                 </form>
                             <?php } ?>
                         </div>
@@ -81,7 +82,7 @@ $_SESSION['current_page'] = "registrazione";
             </div>
         </div>
     </div>
-    <?php include("../template/footer.php"); ?>
+    <?php include '../template/footer.php'; ?>
     <script src="../js/scriptdatemax.js"></script>
 </body>
 
