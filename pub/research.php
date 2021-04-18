@@ -28,12 +28,14 @@ $DataFine=$date[2];
             include '../template/navbar.php'; 
         ?>
         <div class="title">
-            <div class="row">
-                <div class="col-7"style="text-align:right;color:#d6ad60;padding-top:20px;">
-                    <h1>RISULTATI RICERCA</h1>
-                </div>
-                <div class="col-5">
-                    <img src="../img/cerca_logo.png" class="img-fluid" alt="logo"style="height:100px;">
+            <div class="container-fluid mt-4 mt-xl-0">
+                <div class="row ">
+                    <div class="col-7" style="text-align:right;color:#d6ad60;padding-top:20px;">
+                        <h1>RISULTATI RICERCA</h1>
+                    </div>
+                    <div class="col-5">
+                        <img src="../img/cerca_logo.png" class="img-fluid" alt="logo" style="height:100px;">
+                    </div>
                 </div>
             </div>
         </div>

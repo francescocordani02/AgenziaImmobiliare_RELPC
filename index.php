@@ -72,6 +72,7 @@ $_SESSION['current_page']="index";
                                     <div class="col-md-4">
                                         <label for="inputState" class="form-label">Affitto min:</label>
                                         <select id="inputState" class="form-select" name="AffittoMin" >
+                                            <option>20</option>
                                             <option>40</option>
                                             <option>60</option>
                                             <option>80</option>

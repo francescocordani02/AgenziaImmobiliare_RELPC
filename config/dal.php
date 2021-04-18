@@ -354,6 +354,7 @@ function Appartamenti_Cercati($Quartiere,$Categoria,$PostiLetto,$PostiAuto,$Affi
             }
         }
     }
+
 }
 
     
