@@ -14,6 +14,9 @@ $_SESSION['current_page']="research";
         <?php 
             include '../template/navbar.php';
         ?>
+        <div class="container-fluid">
+            
+        </div>
     </div>
     <?php include '../template/footer.php'; ?>
 </body>

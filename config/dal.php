@@ -304,7 +304,7 @@ function ImmagineAppartamentoRicerca($IdAppartamento)
 
 function Appartamenti_Cercati($Quartiere,$Categoria,$PostiLetto,$PostiAuto,$AffittoMin,$AffittoMax,$SuperficieMin,$SuperficieMax,$DataInizio,$DataFine){
     $conn=Connettiti();
-    $cont_ricerche=0;
+    echo '<div class="col-sm m-4"style="color:white;">';
     $query_quartiere = $conn->query("SELECT IdQuartiere FROM quartieri WHERE Nome='".$Quartiere."'");
     if($query_quartiere->num_rows>0){
         $row=$query_quartiere->fetch_assoc();
@@ -317,22 +317,41 @@ function Appartamenti_Cercati($Quartiere,$Categoria,$PostiLetto,$PostiAuto,$Affi
     }
     $query_appartamenti =$conn->query("SELECT * FROM appartamenti WHERE PrezzoGiorno BETWEEN $AffittoMin AND $AffittoMax AND FK_IdQuartiere=$FK_IdQuartiere AND FK_IdCategoria=$FK_IdCategoria AND PostiLetto=$PostiLetto AND Parcheggio=$PostiAuto AND dpc=0 AND Superficie BETWEEN $SuperficieMin AND $SuperficieMax");
     if($query_appartamenti->num_rows>0){
-        $cont_ricerche++;
-        if($cont_ricerche==1)
-            $ris="risultato";
-        else
-            $ris="risultati";
-        echo '<div class="row" style=color:#d6ad60;padding-left:14px;"><h5>'.$cont_ricerche.' ' .$ris.'</h5></div>';
         while ($row2 = $query_appartamenti->fetch_assoc()) {
             $IdAppartamento = $row2['IdAppartamento'];
-            echo '<div class="container-fluid"style="color:white;padding-top:30px;">';
-            echo '<div class="container-fluid"style="border-style:solid; border-width:4px;border-color:#d6ad60;">' . PHP_EOL . '<div class="row">';
-            echo '<div class="col-6"><img src="'.ImmagineAppartamentoRicerca($IdAppartamento).'" class="img-fluid" alt="img"style="padding-top:20px;padding-bottom:23px;padding-left:8px;"></div>';
+            $note= substr($row2['Note'],0,80);
+            echo '<div class="container-fluid"style="border-style:solid; border-width:4px;border-color:#d6ad60;margin-top:30px;">' . PHP_EOL . '<div class="row">';
+            echo '<div class="col-6"><img src="'.ImmagineAppartamentoRicerca($IdAppartamento).'" class="img-fluid" alt="img"style="padding-top:17px;padding-bottom:17px;height:318px;"></div>';
             echo '<div class="col-6">' . PHP_EOL . '<div class="container">' . PHP_EOL . '<div class="row"style="padding-top:20px; text-align:center;text-transform:uppercase;color:#d6ad60;">' . PHP_EOL . '<h3>'.$row2['NomeApp'].'</h3>' . PHP_EOL . '</div>';
-            echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>'.$row2['Note']. '</h5>' . PHP_EOL . '</div>';
+            echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>'.$note. '....</h5>' . PHP_EOL . '</div>';
             echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>'.$row2['Indirizzo']. ', '.$Quartiere.'.</h5>' . PHP_EOL . '</div>';
             echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>Affitto Giornaliero: '.$row2['PrezzoGiorno'].' €</h5>' . PHP_EOL . '</div>';
-            echo '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+            echo '<div class="row align-items-center">' . PHP_EOL . '<div class="col" style="text-align:center;margin-top:20px;">'. PHP_EOL . '<a href="information.php?IdAppartamento=' .$IdAppartamento. '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>' . PHP_EOL . '</div>'. PHP_EOL . '</div>' . PHP_EOL .'</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+        }
+    }
+    else{
+        echo 'la ricerca non ha prodotto risultati';
+    }
+    $DataInizio = date("Y-m-d",strtotime($DataInizio));
+    $DataFine = date("Y-m-d",strtotime($DataFine));
+    $query_date = $conn->query("SELECT DISTINCT FK_IdAppartamento FROM prenotazioni INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento WHERE DataInizio <> '".$DataInizio."' AND DataFine <> '".$DataFine."' AND DataInizio NOT BETWEEN '".$DataInizio."' AND '".$DataFine."' AND DataFine NOT BETWEEN '".$DataInizio."' AND '".$DataFine."' AND NOT (DataInizio < '".$DataInizio."' AND DataFine > '".$DataFine."') AND PrezzoGiorno BETWEEN $AffittoMin AND $AffittoMax AND FK_IdQuartiere=$FK_IdQuartiere AND FK_IdCategoria=$FK_IdCategoria AND PostiLetto=$PostiLetto AND Parcheggio=$PostiAuto AND Superficie BETWEEN $SuperficieMin AND $SuperficieMax");
+    if($query_date->num_rows>0){
+        while($row3=$query_date->fetch_assoc()){
+            $FK_IdAppartamento=$row3['FK_IdAppartamento'];
+            $query_appartamenti_date = $conn->query("SELECT * FROM appartamenti WHERE IdAppartamento = $FK_IdAppartamento");
+            if($query_appartamenti_date->num_rows>0){
+                while($row4=$query_appartamenti_date->fetch_assoc()){
+                    $note= substr($row4['Note'],0,80);
+                    $IdAppartamento=$row4['IdAppartamento'];
+                    echo '<div class="container-fluid"style="border-style:solid; border-width:4px;border-color:#d6ad60;margin-top:30px;">' . PHP_EOL . '<div class="row">';
+                    echo '<div class="col-6"><img src="'.ImmagineAppartamentoRicerca($IdAppartamento).'" class="img-fluid" alt="img"style="padding-top:17px;padding-bottom:17px;height:318px;"></div>';
+                    echo '<div class="col-6">' . PHP_EOL . '<div class="container">' . PHP_EOL . '<div class="row"style="padding-top:20px; text-align:center;text-transform:uppercase;color:#d6ad60;">' . PHP_EOL . '<h3>'.$row4['NomeApp'].'</h3>' . PHP_EOL . '</div>';
+                    echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>'.$note. '....</h5>' . PHP_EOL . '</div>';
+                    echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>'.$row4['Indirizzo']. ', '.$Quartiere.'.</h5>' . PHP_EOL . '</div>';
+                    echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>Affitto Giornaliero: '.$row4['PrezzoGiorno'].' €</h5>' . PHP_EOL . '</div>';
+                    echo '<div class="row align-items-center">' . PHP_EOL . '<div class="col" style="text-align:center;margin-top:20px;">'. PHP_EOL . '<a href="information.php?IdAppartamento=' .$IdAppartamento. '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>' . PHP_EOL . '</div>'. PHP_EOL . '</div>' . PHP_EOL .'</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+                }
+            }
         }
     }
 }
