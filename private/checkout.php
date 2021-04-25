@@ -7,12 +7,15 @@ if (isset($_SESSION['Username']) == "") {
     define('mydal', TRUE);
     include '../config/dal.php';
     $IdImmobile = $_SESSION['IdAppartamento'];
-    $daterange = $_GET['daterange'];
-    $date=explode(' ',$daterange);
-    $datainizio =$date[0];
-    $datafine=$date[2];
-    $_SESSION['DataInizio'] = $datainizio;
-    $_SESSION['DataFine'] = $datafine;
+    // $daterange = $_GET['daterange'];
+    // $date=explode(' ',$daterange);
+    // $datainizio =$date[0];
+    // $datafine=$date[2];
+    // $_SESSION['DataInizio'] = $datainizio;
+    // $_SESSION['DataFine'] = $datafine;
+    $datainizio = $_SESSION['DataInizio'];
+    $datafine = $_SESSION['DataFine'];
+    // ControllaData($IdImmobile, $datainizio, $datafine);
     $prezzoGiornaliero = $_SESSION['PrezzoGiorno'];
 ?>
 <html lang="it">
@@ -48,7 +51,20 @@ if (isset($_SESSION['Username']) == "") {
               <label for="ccnum" style="color: #171717">Credit card number</label>
               <input type="text" class="inputtypetext" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">
               <label for="expmonth" style="color: #171717">Exp Month</label>
-              <input type="text" class="inputtypetext" id="expmonth" name="expmonth" placeholder="September">
+              <!-- <select type="text" class="form-select" id="expmonth" name="expmonth" placeholder="00">
+                <option>01</option>
+                <option>02</option>
+                <option>03</option>
+                <option>04</option>
+                <option>05</option>
+                <option>06</option>
+                <option>07</option>
+                <option>08</option>
+                <option>09</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option> -->
+              <input type="text" class="inputtypetext" id="expmonth" name="expmonth" placeholder="01">
               <div class="row-checkout">
                 <div class="column-50">
                   <label for="expyear" style="color: #171717">Exp Year</label>

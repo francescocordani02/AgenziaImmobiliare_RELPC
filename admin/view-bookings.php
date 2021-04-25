@@ -24,6 +24,7 @@ $_SESSION['current_page'] = "view-bookings";
             <table id="tableData" class="table table-bordered" style="color:white; background-color:#171717; border:2px solid #d6ad60;">
                 <thead>
                     <tr>
+                        <th class="th-sm">Codice prenotazione</th>
                         <th class="th-sm">Nome appartamento</th>
                         <th class="th-sm">Nome locatario</th>
                         <th class="th-sm">Data inizio</th>

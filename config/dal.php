@@ -96,7 +96,7 @@ function OttieniPrenotazioni()
     $query = "SELECT * FROM prenotazioni INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento INNER JOIN utenti ON FK_IdUtente=IdUtente ORDER BY NomeAPP ASC";
     $result = $conn->query($query);
     while ($row = $result->fetch_assoc()) {
-        $tabella .= "<tr><td>" . $row["NomeApp"] . "</td><td>" . $row["Nome"] . " " . $row["Cognome"] . "</td><td>" . date("d/m/Y", strtotime($row['DataInizio'])) . "</td><td>" . date("d/m/Y", strtotime($row['DataFine']))  . "</td><td>" . $row["Costo"] . "</td><td><a href='../pub/information.php?IdAppartamento=" . $row["FK_IdAppartamento"] . "'>Vedi</a></td></tr>";
+        $tabella .= "<tr><td>" . $row["Codice"] . "</td><td>" . $row["NomeApp"] . "</td><td>" . $row["Nome"] . " " . $row["Cognome"] . "</td><td>" . date("d/m/Y", strtotime($row['DataInizio'])) . "</td><td>" . date("d/m/Y", strtotime($row['DataFine']))  . "</td><td>" . $row["Costo"] . "</td><td><a href='../pub/information.php?IdAppartamento=" . $row["FK_IdAppartamento"] . "'>Vedi</a></td></tr>";
     }
     return $tabella;
     mysqli_close($conn);
@@ -668,6 +668,23 @@ function EliminaAppartamento($IdAppartamento)
     mysqli_close($conn);
 }
 
+function ControllaData($Id, $DataInizio, $DataFine)
+{
+    $conn = Connettiti();
+    $data1 = date("Y-m-d", strtotime($DataInizio));
+    $data2 = date("Y-m-d", strtotime($DataFine));
+    $query_id = "SELECT IdPrenotazione FROM prenotazioni WHERE EXISTS(SELECT * FROM prenotazioni WHERE FK_IdAppartamento = $Id AND DataInizio AND DataFine BETWEEN '" . $data1 . "' AND '" . $data2 . "')";
+    $result = mysqli_query($conn, $query_id);
+    $rowResult = mysqli_num_rows($result);
+    if ($rowResult > 0) {
+        echo "<h1 class='display-3' style='color:white'>L'immobile non è disponibile nel range di date indicato.</h1>";
+        echo "<a href='../private/scelta-data.php?IdAppartamento=$Id'>Clicca qui per scegliere di nuovo la data</a>";
+    } else {
+        header("location: checkout.php");
+    }
+    mysqli_close($conn);
+}
+
 function CalcolaGiorni($DataInizio, $DataFine)
 {
     $data1 = strtotime($DataInizio);
@@ -722,12 +739,15 @@ function InserisciPrenotazione($DataInizio, $DataFine, $Costo, $IdAppartamento, 
     $conn = Connettiti();
     $data1 = date('Y-m-d', strtotime($DataInizio));
     $data2 = date('Y-m-d', strtotime($DataFine));
-    $query_prenotazione = "INSERT INTO prenotazioni (DataInizio, DataFine, Costo, FK_IdAppartamento, FK_IdUtente) VALUES ('$data1', '$data2', '$Costo', '$IdAppartamento', '$IdUtente')";
+    $codice = rand(10000, 99000);
+    $query_prenotazione = "INSERT INTO prenotazioni (DataInizio, DataFine, Costo, Codice, FK_IdAppartamento, FK_IdUtente) VALUES ('$data1', '$data2', '$Costo', '$codice', '$IdAppartamento', '$IdUtente')";
     $result = mysqli_query($conn, $query_prenotazione);
     if (!$result) {
         die("Errore!");
     } else {
         echo "<h1 class='display-3' style='color: white'>Grazie della prenotazione</h1>";
+        echo "<br>";
+        echo "<h5 style='color:white'>Codice prenotazione: " . $codice . "</h5>";
     }
     mysqli_close($conn);
 }
@@ -781,7 +801,7 @@ function PoniRimuoviAdmin($PoniAdmin, $IdUtente)
         $result1 = mysqli_query($conn, $queryupdate1);
         if (!$result1) {
             die('Errore query1');
-        }else{
+        } else {
             echo '<h1 style="color: #d6ad60;">Utente posto admin</h1>';
         }
     } else if ($PoniAdmin == 0) {
@@ -789,7 +809,7 @@ function PoniRimuoviAdmin($PoniAdmin, $IdUtente)
         $result2 = mysqli_query($conn, $queryupdate2);
         if (!$result2) {
             die('Errore query2');
-        }else{
+        } else {
             echo '<h1 style="color: #d6ad60;">Utente rimosso dagli admin</h1>';
         }
     }
