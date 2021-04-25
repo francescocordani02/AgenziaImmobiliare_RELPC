@@ -104,7 +104,9 @@ $_SESSION['PrezzoGiorno'] = $rowinfo['PrezzoGiorno'];
                         </div>
                         <div class="row align-items-center" style="margin-left:0px;">
                             <div class="col" style="text-align:center;padding-bottom:50px;padding-top:30px;">
-                                <a href="../private/scelta-data.php?IdAppartamento=<?php echo $_GET['IdAppartamento'] ?>" type="submit" id="button" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717;">AFFITTA ONLINE</a>
+                                <?php if (!isset($_SESSION['IsAdmin']) || $_SESSION['IsAdmin'] == 0) {
+                                    echo '<a href="../private/scelta-data.php?IdAppartamento= $IdAppartamento" type="submit" id="button" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717;">AFFITTA ONLINE</a>';
+                                } ?>
                             </div>
                         </div>
                     </div>

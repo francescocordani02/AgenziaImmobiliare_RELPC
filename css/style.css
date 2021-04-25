@@ -156,8 +156,34 @@ html {
     float: right;
 }
 
-label {
-    color: #171717;
+.paging-nav {
+    text-align: center;
+    padding-top: 25px;
+    padding-bottom: 5px;
+}
+
+.paging-nav a {
+    margin: auto 1px;
+    text-decoration: none;
+    display: inline-block;
+    padding: 1px 10px;
+    background: #d6ad60;
+    color: white;
+    border-radius: 3px;
+}
+
+.paging-nav .selected-page {
+    background: #d6ad60;
+    font-weight: bold;
+}
+
+.paging-nav,
+#tableData {
+    width: 90%;
+    margin: 0px auto;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    text-align: center;
 }
 
 .container-left {
@@ -206,14 +232,6 @@ label {
 
 
 /* inizio checkout */
-
-label {
-    color: white;
-}
-
-* {
-    box-sizing: border-box;
-}
 
 .row-checkout {
     display: -ms-flexbox;

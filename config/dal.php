@@ -40,7 +40,7 @@ function Registrazione($nome, $cognome, $username, $email, $password, $indirizzo
             $_SESSION['Username'] = $username;
             $_SESSION['NomeCognome'] = $nome . " " . $cognome;
             $_SESSION['IsAdmin'] = 0;
-            echo "<div class='form1'><h3>Ti sei registrato con successo.</h3><br/>Cliccare qui per <a href='../private/test.php'>andare alla homepage.</a></div>";
+            echo "<div class='form1'><h3>Ti sei registrato con successo.</h3><br/>Cliccare qui per <a href='../index.php'>andare alla homepage.</a></div>";
         }
     }
     mysqli_close($conn);
@@ -83,12 +83,7 @@ function OttieniAppartamenti()
     $query = "SELECT * FROM appartamenti INNER JOIN quartieri ON FK_IdQuartiere=IdQuartiere INNER JOIN categorie ON FK_IdCategoria=IdCategoria INNER JOIN utenti ON FK_IdUtenti=IdUtente ORDER BY NomeAPP ASC";
     $result = $conn->query($query);
     while ($row = $result->fetch_assoc()) {
-        if ($row['dpc'] == 0) {
-            $prenotato = "No";
-        } else {
-            $prenotato = "Si";
-        }
-        $tabella .= "<tr><td>" . $row["NomeApp"] . "</td><td>" . $row["Indirizzo"] . "</td><td>" . $row["NomeQuartiere"] . "</td><td>" . $row["Categoria"] . "</td><td>" . $row["Superficie"] . "</td><td>" . $row["PrezzoGiorno"] . "</td><td>" . $row["Nome"] . " " . $row["Cognome"] . "</td><td>" . $row["Parcheggio"] . "</td><td>" . $row["PostiLetto"] . "</td><td>" . $prenotato . "</td><td><a href='../pub/information.php?IdAppartamento=" . $row["IdAppartamento"] . "'>Vedi</a></td><td><a href='cancel-apartment.php?IdAppartamento=" . $row["IdAppartamento"] . "'>Elimina</a></td></tr>";
+        $tabella .= "<tr><td>" . $row["NomeApp"] . "</td><td>" . $row["Indirizzo"] . "</td><td>" . $row["NomeQuartiere"] . "</td><td>" . $row["Categoria"] . "</td><td>" . $row["Superficie"] . "</td><td>" . $row["PrezzoGiorno"] . "</td><td>" . $row["Nome"] . " " . $row["Cognome"] . "</td><td>" . $row["Parcheggio"] . "</td><td>" . $row["PostiLetto"] . "</td><td><a href='../pub/information.php?IdAppartamento=" . $row["IdAppartamento"] . "'>Vedi</a></td><td><a href='cancel-apartment.php?IdAppartamento=" . $row["IdAppartamento"] . "'>Elimina</a></td></tr>";
     }
     return $tabella;
     mysqli_close($conn);
@@ -101,7 +96,7 @@ function OttieniPrenotazioni()
     $query = "SELECT * FROM prenotazioni INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento INNER JOIN utenti ON FK_IdUtente=IdUtente ORDER BY NomeAPP ASC";
     $result = $conn->query($query);
     while ($row = $result->fetch_assoc()) {
-        $tabella .= "<tr><td>" . $row["NomeApp"] . "</td><td>" . $row["Nome"] . " " . $row["Cognome"] . "</td><td>" . date("d/m/Y", strtotime($row['DataInizio'])) . "</td><td>" . date("d/m/Y", strtotime($row['DataFine']))  . "</td><td>" . $row["Costo"] . "</td><td><a href='../pub/information.php?IdAppartamento=" . $row["FK_IdAppartamento"] . "'>Vedi</a></td></tr>";
+        $tabella .= "<tr><td>" . $row["Codice"] . "</td><td>" . $row["NomeApp"] . "</td><td>" . $row["Nome"] . " " . $row["Cognome"] . "</td><td>" . date("d/m/Y", strtotime($row['DataInizio'])) . "</td><td>" . date("d/m/Y", strtotime($row['DataFine']))  . "</td><td>" . $row["Costo"] . "</td><td><a href='../pub/information.php?IdAppartamento=" . $row["FK_IdAppartamento"] . "'>Vedi</a></td></tr>";
     }
     return $tabella;
     mysqli_close($conn);
@@ -354,12 +349,18 @@ function OttieniUtenti()
     $result = $conn->query($query);
     while ($row = $result->fetch_assoc()) {
         $admin = "";
+        $poniadmin = 0;
+        $sino = "";
         if ($row['IsAdmin'] == 0) {
             $admin = "No";
+            $poniadmin = 1;
+            $sino = "Poni";
         } else {
             $admin = "Si";
+            $poniadmin = 0;
+            $sino = "Rimuovi";
         }
-        $tabella .= "<tr><td>" . $row["Nome"] . " " . $row["Cognome"] . "</td><td>" . $row["Username"] . "</td><td>" . date("d/m/Y", strtotime($row['DoB'])) . "</td><td>" . $row["Telefono"] . "</td><td>" . $row["Email"] . "</td><td>" . $row["Indirizzo"] . "</td><td>" . $admin . "</td></tr>";
+        $tabella .= "<tr><td>" . $row["Nome"] . " " . $row["Cognome"] . "</td><td>" . $row["Username"] . "</td><td>" . date("d/m/Y", strtotime($row['DoB'])) . "</td><td>" . $row["Telefono"] . "</td><td>" . $row["Email"] . "</td><td>" . $row["Indirizzo"] . "</td><td>" . $admin . "</td><td><a href='to-admin.php?PoniAdmin=" . $poniadmin . "&IdUtente=" . $row["IdUtente"] . "'>" . $sino . "</a></td><td><a href='cancel-user.php?IdUtente=" . $row["IdUtente"] . "'>Elimina</a></td></tr>";
     }
     return $tabella;
     mysqli_close($conn);
@@ -413,54 +414,54 @@ function ImmagineAppartamentoRicerca($IdAppartamento)
     mysqli_close($conn);
 }
 
-function Appartamenti_Cercati($Quartiere,$Categoria,$PostiLetto,$PostiAuto,$AffittoMin,$AffittoMax,$SuperficieMin,$SuperficieMax,$DataInizio,$DataFine){
-    $conn=Connettiti();
+function Appartamenti_Cercati($Quartiere, $Categoria, $PostiLetto, $PostiAuto, $AffittoMin, $AffittoMax, $SuperficieMin, $SuperficieMax, $DataInizio, $DataFine)
+{
+    $conn = Connettiti();
     echo '<div class="col-sm m-4"style="color:white;">';
-    $query_quartiere = $conn->query("SELECT IdQuartiere FROM quartieri WHERE NomeQuartiere='".$Quartiere."'");
-    if($query_quartiere->num_rows>0){
-        $row=$query_quartiere->fetch_assoc();
-        $FK_IdQuartiere= $row['IdQuartiere'];
+    $query_quartiere = $conn->query("SELECT IdQuartiere FROM quartieri WHERE NomeQuartiere='" . $Quartiere . "'");
+    if ($query_quartiere->num_rows > 0) {
+        $row = $query_quartiere->fetch_assoc();
+        $FK_IdQuartiere = $row['IdQuartiere'];
     }
-    $query_categoria = $conn->query("SELECT IdCategoria FROM categorie WHERE Categoria='".$Categoria."'");
-    if($query_categoria->num_rows>0){
-        $row1=$query_categoria->fetch_assoc();
-        $FK_IdCategoria=$row1['IdCategoria'];
+    $query_categoria = $conn->query("SELECT IdCategoria FROM categorie WHERE Categoria='" . $Categoria . "'");
+    if ($query_categoria->num_rows > 0) {
+        $row1 = $query_categoria->fetch_assoc();
+        $FK_IdCategoria = $row1['IdCategoria'];
     }
-    $query_appartamenti =$conn->query("SELECT * FROM appartamenti WHERE PrezzoGiorno BETWEEN $AffittoMin AND $AffittoMax AND FK_IdQuartiere=$FK_IdQuartiere AND FK_IdCategoria=$FK_IdCategoria AND PostiLetto=$PostiLetto AND Parcheggio=$PostiAuto AND dpc=0 AND Superficie BETWEEN $SuperficieMin AND $SuperficieMax");
-    if($query_appartamenti->num_rows>0){
+    $query_appartamenti = $conn->query("SELECT * FROM appartamenti WHERE PrezzoGiorno BETWEEN $AffittoMin AND $AffittoMax AND FK_IdQuartiere=$FK_IdQuartiere AND FK_IdCategoria=$FK_IdCategoria AND PostiLetto=$PostiLetto AND Parcheggio=$PostiAuto AND dpc=0 AND Superficie BETWEEN $SuperficieMin AND $SuperficieMax");
+    if ($query_appartamenti->num_rows > 0) {
         while ($row2 = $query_appartamenti->fetch_assoc()) {
             $IdAppartamento = $row2['IdAppartamento'];
-            $note= substr($row2['Note'],0,80);
+            $note = substr($row2['Note'], 0, 80);
             echo '<div class="container-fluid"style="border-style:solid; border-width:4px;border-color:#d6ad60;margin-top:30px;">' . PHP_EOL . '<div class="row">';
-            echo '<div class="col-6"><img src="'.ImmagineAppartamentoRicerca($IdAppartamento).'" class="img-fluid" alt="img"style="padding-top:17px;padding-bottom:17px;height:318px;"></div>';
-            echo '<div class="col-6">' . PHP_EOL . '<div class="container">' . PHP_EOL . '<div class="row"style="padding-top:20px; text-align:center;text-transform:uppercase;color:#d6ad60;">' . PHP_EOL . '<h3>'.$row2['NomeApp'].'</h3>' . PHP_EOL . '</div>';
-            echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>'.$note. '....</h5>' . PHP_EOL . '</div>';
-            echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>'.$row2['Indirizzo']. ', '.$Quartiere.'.</h5>' . PHP_EOL . '</div>';
-            echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>Affitto Giornaliero: '.$row2['PrezzoGiorno'].' €</h5>' . PHP_EOL . '</div>';
-            echo '<div class="row align-items-center">' . PHP_EOL . '<div class="col" style="text-align:center;margin-top:20px;">'. PHP_EOL . '<a href="information.php?IdAppartamento=' .$IdAppartamento. '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>' . PHP_EOL . '</div>'. PHP_EOL . '</div>' . PHP_EOL .'</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+            echo '<div class="col-6"><img src="' . ImmagineAppartamentoRicerca($IdAppartamento) . '" class="img-fluid" alt="img"style="padding-top:17px;padding-bottom:17px;height:318px;"></div>';
+            echo '<div class="col-6">' . PHP_EOL . '<div class="container">' . PHP_EOL . '<div class="row"style="padding-top:20px; text-align:center;text-transform:uppercase;color:#d6ad60;">' . PHP_EOL . '<h3>' . $row2['NomeApp'] . '</h3>' . PHP_EOL . '</div>';
+            echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>' . $note . '....</h5>' . PHP_EOL . '</div>';
+            echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>' . $row2['Indirizzo'] . ', ' . $Quartiere . '.</h5>' . PHP_EOL . '</div>';
+            echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>Affitto Giornaliero: ' . $row2['PrezzoGiorno'] . ' €</h5>' . PHP_EOL . '</div>';
+            echo '<div class="row align-items-center">' . PHP_EOL . '<div class="col" style="text-align:center;margin-top:20px;">' . PHP_EOL . '<a href="information.php?IdAppartamento=' . $IdAppartamento . '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
         }
-    }
-    else{
+    } else {
         echo 'la ricerca non ha prodotto risultati';
     }
-    $DataInizio = date("Y-m-d",strtotime($DataInizio));
-    $DataFine = date("Y-m-d",strtotime($DataFine));
-    $query_date = $conn->query("SELECT DISTINCT FK_IdAppartamento FROM prenotazioni INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento WHERE DataInizio <> '".$DataInizio."' AND DataFine <> '".$DataFine."' AND DataInizio NOT BETWEEN '".$DataInizio."' AND '".$DataFine."' AND DataFine NOT BETWEEN '".$DataInizio."' AND '".$DataFine."' AND NOT (DataInizio < '".$DataInizio."' AND DataFine > '".$DataFine."') AND PrezzoGiorno BETWEEN $AffittoMin AND $AffittoMax AND FK_IdQuartiere=$FK_IdQuartiere AND FK_IdCategoria=$FK_IdCategoria AND PostiLetto=$PostiLetto AND Parcheggio=$PostiAuto AND Superficie BETWEEN $SuperficieMin AND $SuperficieMax");
-    if($query_date->num_rows>0){
-        while($row3=$query_date->fetch_assoc()){
-            $FK_IdAppartamento=$row3['FK_IdAppartamento'];
+    $DataInizio = date("Y-m-d", strtotime($DataInizio));
+    $DataFine = date("Y-m-d", strtotime($DataFine));
+    $query_date = $conn->query("SELECT DISTINCT FK_IdAppartamento FROM prenotazioni INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento WHERE DataInizio <> '" . $DataInizio . "' AND DataFine <> '" . $DataFine . "' AND DataInizio NOT BETWEEN '" . $DataInizio . "' AND '" . $DataFine . "' AND DataFine NOT BETWEEN '" . $DataInizio . "' AND '" . $DataFine . "' AND NOT (DataInizio < '" . $DataInizio . "' AND DataFine > '" . $DataFine . "') AND PrezzoGiorno BETWEEN $AffittoMin AND $AffittoMax AND FK_IdQuartiere=$FK_IdQuartiere AND FK_IdCategoria=$FK_IdCategoria AND PostiLetto=$PostiLetto AND Parcheggio=$PostiAuto AND Superficie BETWEEN $SuperficieMin AND $SuperficieMax");
+    if ($query_date->num_rows > 0) {
+        while ($row3 = $query_date->fetch_assoc()) {
+            $FK_IdAppartamento = $row3['FK_IdAppartamento'];
             $query_appartamenti_date = $conn->query("SELECT * FROM appartamenti WHERE IdAppartamento = $FK_IdAppartamento");
-            if($query_appartamenti_date->num_rows>0){
-                while($row4=$query_appartamenti_date->fetch_assoc()){
-                    $note= substr($row4['Note'],0,80);
-                    $IdAppartamento=$row4['IdAppartamento'];
+            if ($query_appartamenti_date->num_rows > 0) {
+                while ($row4 = $query_appartamenti_date->fetch_assoc()) {
+                    $note = substr($row4['Note'], 0, 80);
+                    $IdAppartamento = $row4['IdAppartamento'];
                     echo '<div class="container-fluid"style="border-style:solid; border-width:4px;border-color:#d6ad60;margin-top:30px;">' . PHP_EOL . '<div class="row">';
-                    echo '<div class="col-6"><img src="'.ImmagineAppartamentoRicerca($IdAppartamento).'" class="img-fluid" alt="img"style="padding-top:17px;padding-bottom:17px;height:318px;"></div>';
-                    echo '<div class="col-6">' . PHP_EOL . '<div class="container">' . PHP_EOL . '<div class="row"style="padding-top:20px; text-align:center;text-transform:uppercase;color:#d6ad60;">' . PHP_EOL . '<h3>'.$row4['NomeApp'].'</h3>' . PHP_EOL . '</div>';
-                    echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>'.$note. '....</h5>' . PHP_EOL . '</div>';
-                    echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>'.$row4['Indirizzo']. ', '.$Quartiere.'.</h5>' . PHP_EOL . '</div>';
-                    echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>Affitto Giornaliero: '.$row4['PrezzoGiorno'].' €</h5>' . PHP_EOL . '</div>';
-                    echo '<div class="row align-items-center">' . PHP_EOL . '<div class="col" style="text-align:center;margin-top:20px;">'. PHP_EOL . '<a href="information.php?IdAppartamento=' .$IdAppartamento. '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>' . PHP_EOL . '</div>'. PHP_EOL . '</div>' . PHP_EOL .'</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+                    echo '<div class="col-6"><img src="' . ImmagineAppartamentoRicerca($IdAppartamento) . '" class="img-fluid" alt="img"style="padding-top:17px;padding-bottom:17px;height:318px;"></div>';
+                    echo '<div class="col-6">' . PHP_EOL . '<div class="container">' . PHP_EOL . '<div class="row"style="padding-top:20px; text-align:center;text-transform:uppercase;color:#d6ad60;">' . PHP_EOL . '<h3>' . $row4['NomeApp'] . '</h3>' . PHP_EOL . '</div>';
+                    echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>' . $note . '....</h5>' . PHP_EOL . '</div>';
+                    echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>' . $row4['Indirizzo'] . ', ' . $Quartiere . '.</h5>' . PHP_EOL . '</div>';
+                    echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>Affitto Giornaliero: ' . $row4['PrezzoGiorno'] . ' €</h5>' . PHP_EOL . '</div>';
+                    echo '<div class="row align-items-center">' . PHP_EOL . '<div class="col" style="text-align:center;margin-top:20px;">' . PHP_EOL . '<a href="information.php?IdAppartamento=' . $IdAppartamento . '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
                 }
             }
         }
@@ -538,7 +539,7 @@ function InserisciAppartamento($img, $titolo, $prezzogiornaliero, $postiauto, $p
         $row1 = $result->fetch_assoc();
         $FK_IdQuartiere = $row1['IdQuartiere'];
     }
-    $prenotato=0;
+    $prenotato = 0;
     $query_richiesta = "INSERT INTO appartamenti (NomeApp, Parcheggio, PostiLetto, NumeroCamere, Indirizzo, Note, Superficie, PrezzoGiorno, dpc, Latitudine, Longitudine, FK_IdCategoria, FK_IdUtenti, FK_IdQuartiere) VALUES ('$titolo','$postiauto','$postiletto','$ncamere','$indirizzo', '$note', '$superficie', '$prezzogiornaliero', '$prenotato','$latitudine', '$longitudine', '$FK_IdCategoria', '$FK_IdUtente', '$FK_IdQuartiere')";
     $result = mysqli_query($conn, $query_richiesta);
     if (!$result) {
@@ -614,8 +615,7 @@ function AccettaRichiesta($IdRichiesta)
                 $result3 = mysqli_query($conn, $querydelete);
                 if (!$result3) {
                     die('Errore query2');
-                    
-                }else{
+                } else {
                     return $accept = "Richiesta accettata";
                 }
             }
@@ -627,15 +627,15 @@ function AccettaRichiesta($IdRichiesta)
 function RifiutaRichiesta($IdRichiesta)
 {
     $conn = Connettiti();
-    $querydeleterequest = "DELETE FROM richieste WHERE IdRichiesta=$IdRichiesta";
-    $result3 = mysqli_query($conn, $querydeleterequest);
-    if (!$result3) {
-        die('Errore query2');
+    $querydeleteimmagini = "DELETE FROM immagini WHERE FK_IdRichiesta=$IdRichiesta";
+    $result4 = mysqli_query($conn, $querydeleteimmagini);
+    if (!$result4) {
+        die('Errore query3');
     } else {
-        $querydeleteimmagini = "DELETE FROM immagini WHERE FK_IdRichiesta=$IdRichiesta";
-        $result4 = mysqli_query($conn, $querydeleteimmagini);
-        if (!$result4) {
-            die('Errore query3');
+        $querydeleterequest = "DELETE FROM richieste WHERE IdRichiesta=$IdRichiesta";
+        $result3 = mysqli_query($conn, $querydeleterequest);
+        if (!$result3) {
+            die('Errore query2');
         } else {
             return $refuse = "Richiesta rifiutata";
         }
@@ -643,23 +643,24 @@ function RifiutaRichiesta($IdRichiesta)
     mysqli_close($conn);
 }
 
-function EliminaAppartamento($IdAppartamento){
-    $conn=Connettiti();
+function EliminaAppartamento($IdAppartamento)
+{
+    $conn = Connettiti();
     $querydeleteimmagini = "DELETE FROM immagini WHERE FK_IdAppartamento=$IdAppartamento";
     $result4 = mysqli_query($conn, $querydeleteimmagini);
     if (!$result4) {
         die('Errore query1');
-    }else{
+    } else {
         $querydeleteprenotazioni = "DELETE FROM prenotazioni WHERE FK_IdAppartamento=$IdAppartamento";
         $result2 = mysqli_query($conn, $querydeleteprenotazioni);
         if (!$result2) {
             die('Errore query2');
-        }else{
+        } else {
             $querydeleteappartamenti = "DELETE FROM appartamenti WHERE IdAppartamento=$IdAppartamento";
             $result3 = mysqli_query($conn, $querydeleteappartamenti);
             if (!$result3) {
                 die('Errore query3');
-            }else{
+            } else {
                 echo '<h1 style="color: #d6ad60;">Appartamento cancellato</h1>';
             }
         }
@@ -667,7 +668,25 @@ function EliminaAppartamento($IdAppartamento){
     mysqli_close($conn);
 }
 
-function CalcolaGiorni($DataInizio, $DataFine){
+function ControllaData($Id, $DataInizio, $DataFine)
+{
+    $conn = Connettiti();
+    $data1 = date("Y-m-d", strtotime($DataInizio));
+    $data2 = date("Y-m-d", strtotime($DataFine));
+    $query_id = "SELECT IdPrenotazione FROM prenotazioni WHERE EXISTS(SELECT * FROM prenotazioni WHERE FK_IdAppartamento = $Id AND DataInizio AND DataFine BETWEEN '" . $data1 . "' AND '" . $data2 . "')";
+    $result = mysqli_query($conn, $query_id);
+    $rowResult = mysqli_num_rows($result);
+    if ($rowResult > 0) {
+        echo "<h1 class='display-3' style='color:white'>L'immobile non è disponibile nel range di date indicato.</h1>";
+        echo "<a href='../private/scelta-data.php?IdAppartamento=$Id'>Clicca qui per scegliere di nuovo la data</a>";
+    } else {
+        header("location: checkout.php");
+    }
+    mysqli_close($conn);
+}
+
+function CalcolaGiorni($DataInizio, $DataFine)
+{
     $data1 = strtotime($DataInizio);
     $data2 = strtotime($DataFine);
     $datediff = $data2 - $data1;
@@ -675,7 +694,8 @@ function CalcolaGiorni($DataInizio, $DataFine){
     echo $days;
 }
 
-function CalcolaCostoTotale($DataInizio, $DataFine, $prezzogiornaliero){
+function CalcolaCostoTotale($DataInizio, $DataFine, $prezzogiornaliero)
+{
     $data1 = strtotime($DataInizio);
     $data2 = strtotime($DataFine);
     $datediff = $data2 - $data1;
@@ -684,13 +704,14 @@ function CalcolaCostoTotale($DataInizio, $DataFine, $prezzogiornaliero){
     echo $PrezzoTotale;
 }
 
-function PrezzoCheckout($Id){
-    $conn=Connettiti();
+function PrezzoCheckout($Id)
+{
+    $conn = Connettiti();
     $PrezzoImmobile = 0;
     $query_checkout = "SELECT PrezzoGiorno FROM appartamenti WHERE IdAppartamento=$Id";
     $result = mysqli_query($conn, $query_checkout);
     $rowQuartiere = mysqli_num_rows($result);
-    if($rowQuartiere>0){
+    if ($rowQuartiere > 0) {
         $row1 = $result->fetch_assoc();
         $PrezzoImmobile = $row1['PrezzoGiorno'];
         echo $PrezzoImmobile;
@@ -698,13 +719,14 @@ function PrezzoCheckout($Id){
     mysqli_close($conn);
 }
 
-function NomeCheckout($Id){
-    $conn=Connettiti();
+function NomeCheckout($Id)
+{
+    $conn = Connettiti();
     $PrezzoImmobile = 0;
     $query_checkout = "SELECT NomeApp FROM appartamenti WHERE IdAppartamento=$Id";
     $result = mysqli_query($conn, $query_checkout);
     $rowQuartiere = mysqli_num_rows($result);
-    if($rowQuartiere>0){
+    if ($rowQuartiere > 0) {
         $row1 = $result->fetch_assoc();
         $NomeImmobile = $row1['NomeApp'];
         echo $NomeImmobile;
@@ -712,17 +734,83 @@ function NomeCheckout($Id){
     mysqli_close($conn);
 }
 
-function InserisciPrenotazione($DataInizio, $DataFine, $Costo, $IdAppartamento, $IdUtente){
+function InserisciPrenotazione($DataInizio, $DataFine, $Costo, $IdAppartamento, $IdUtente)
+{
     $conn = Connettiti();
     $data1 = date('Y-m-d', strtotime($DataInizio));
     $data2 = date('Y-m-d', strtotime($DataFine));
-    $query_prenotazione = "INSERT INTO prenotazioni (DataInizio, DataFine, Costo, FK_IdAppartamento, FK_IdUtente) VALUES ('$data1', '$data2', '$Costo', '$IdAppartamento', '$IdUtente')";
+    $codice = rand(10000, 99000);
+    $query_prenotazione = "INSERT INTO prenotazioni (DataInizio, DataFine, Costo, Codice, FK_IdAppartamento, FK_IdUtente) VALUES ('$data1', '$data2', '$Costo', '$codice', '$IdAppartamento', '$IdUtente')";
     $result = mysqli_query($conn, $query_prenotazione);
-    if(!$result){
+    if (!$result) {
         die("Errore!");
-    }
-    else{
+    } else {
         echo "<h1 class='display-3' style='color: white'>Grazie della prenotazione</h1>";
+        echo "<br>";
+        echo "<h5 style='color:white'>Codice prenotazione: " . $codice . "</h5>";
     }
     mysqli_close($conn);
+}
+
+function EliminaUtente($IdUtente)
+{
+    $conn = Connettiti();
+    $query = "SELECT * FROM appartamenti WHERE FK_IdUtenti=$IdUtente";
+    $result = $conn->query($query);
+    while ($row = $result->fetch_assoc()) {
+        $querydeleteimmagini = "DELETE FROM immagini WHERE FK_IdAppartamento=" . $row['IdAppartamento'];
+        $result4 = mysqli_query($conn, $querydeleteimmagini);
+        if (!$result4) {
+            die('Errore query1');
+        }
+        $querydeleterichiesta1 = "DELETE FROM appartamenti WHERE IdAppartamento=" . $row['IdAppartamento'];
+        $result7 = mysqli_query($conn, $querydeleterichiesta1);
+        if (!$result7) {
+            die('Errore query2');
+        }
+    }
+    $query2 = "SELECT * FROM richieste WHERE FK_IdUtente=$IdUtente";
+    $result2 = $conn->query($query2);
+    while ($row2 = $result2->fetch_assoc()) {
+        $querydeleteimmagini2 = "DELETE FROM immagini WHERE FK_IdRichiesta=" . $row2['IdRichiesta'];
+        $result3 = mysqli_query($conn, $querydeleteimmagini2);
+        if (!$result3) {
+            die('Errore query2');
+        }
+        $querydeleterichiesta = "DELETE FROM richieste WHERE IdRichiesta=" . $row2['IdRichiesta'];
+        $result6 = mysqli_query($conn, $querydeleterichiesta);
+        if (!$result6) {
+            die('Errore query2');
+        }
+    }
+    $querydeleteutente = "DELETE FROM utenti WHERE IdUtente=$IdUtente";
+    $result5 = mysqli_query($conn, $querydeleteutente);
+    if (!$result5) {
+        die('Errore query2');
+    } else {
+        echo '<h1 style="color: #d6ad60;">Utente cancellato</h1>';
+    }
+    mysqli_close($conn);
+}
+
+function PoniRimuoviAdmin($PoniAdmin, $IdUtente)
+{
+    $conn = Connettiti();
+    if ($PoniAdmin == 1) {
+        $queryupdate1 = "UPDATE utenti SET IsAdmin=1 WHERE IdUtente=$IdUtente";
+        $result1 = mysqli_query($conn, $queryupdate1);
+        if (!$result1) {
+            die('Errore query1');
+        } else {
+            echo '<h1 style="color: #d6ad60;">Utente posto admin</h1>';
+        }
+    } else if ($PoniAdmin == 0) {
+        $queryupdate2 = "UPDATE utenti SET IsAdmin=0 WHERE IdUtente=$IdUtente";
+        $result2 = mysqli_query($conn, $queryupdate2);
+        if (!$result2) {
+            die('Errore query2');
+        } else {
+            echo '<h1 style="color: #d6ad60;">Utente rimosso dagli admin</h1>';
+        }
+    }
 }

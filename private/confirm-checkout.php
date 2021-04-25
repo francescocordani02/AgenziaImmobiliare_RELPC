@@ -1,7 +1,7 @@
 <?php
 session_start();
-if(isset($_SESSION['Username']) == "") {
-  header("location: ../login.php");
+if (isset($_SESSION['Username']) == "") {
+  header("location: ../pub/login.php");
 }
     $_SESSION['current_page']="confirm-checkout";
     define('mydal', TRUE);

@@ -2,8 +2,8 @@
 define('mydal', TRUE);
 include_once '../config/dal.php';
 session_start();
-if (!isset($_SESSION['IsAdmin']) || $_SESSION['IsAdmin'] != 1) {
-    header("location: ../login.php");
+if (isset($_SESSION['Username']) == "") {
+    header("location: ../pub/login.php");
 }
 $_SESSION['current_page'] = "view-bookings";
 ?>
@@ -12,6 +12,7 @@ $_SESSION['current_page'] = "view-bookings";
 
 <head>
     <?php include '../template/header.php'; ?>
+    <script src="../js/index.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 </head>
 
@@ -23,6 +24,7 @@ $_SESSION['current_page'] = "view-bookings";
             <table id="tableData" class="table table-bordered" style="color:white; background-color:#171717; border:2px solid #d6ad60;">
                 <thead>
                     <tr>
+                        <th class="th-sm">Codice prenotazione</th>
                         <th class="th-sm">Nome appartamento</th>
                         <th class="th-sm">Nome locatario</th>
                         <th class="th-sm">Data inizio</th>

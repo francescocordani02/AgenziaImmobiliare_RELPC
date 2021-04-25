@@ -2,8 +2,8 @@
 define('mydal', TRUE);
 include '../config/dal.php';
 session_start();
-if (!isset($_SESSION['IsAdmin']) || $_SESSION['IsAdmin'] != 1) {
-    header("location: ../login.php");
+if (isset($_SESSION['Username']) == "") {
+    header("location: ../pub/login.php");
 }
 $_SESSION['current_page'] = "view-apartments";
 ?>
@@ -12,7 +12,6 @@ $_SESSION['current_page'] = "view-apartments";
 
 <head>
     <?php include '../template/header.php'; ?>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 </head>
 
 <body style="background-color: #171717;">
@@ -30,6 +29,8 @@ $_SESSION['current_page'] = "view-apartments";
                         <th class="th-sm">Email</th>
                         <th class="th-sm">Indirizzo</th>
                         <th class="th-sm">Admin</th>
+                        <th class="th-sm">Poni/rimuovi admin</th>
+                        <th class="th-sm">Elimina</th>
                     </tr>
                 </thead>
                 <tbody>

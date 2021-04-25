@@ -1,7 +1,7 @@
 <?php
 session_start();
-if (!isset($_SESSION['IsAdmin']) || $_SESSION['IsAdmin'] != 0) {
-  header("location: ../login.php");
+if (isset($_SESSION['Username']) == "") {
+  header("location: ../pub/login.php");
 }
 $_SESSION['current_page'] = "confirm-rent-your-house";
 define('mydal', TRUE);

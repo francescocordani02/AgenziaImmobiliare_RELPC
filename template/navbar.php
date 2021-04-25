@@ -18,43 +18,41 @@ $currentpage = $_SESSION['current_page'];
                                                 if (!isset($_SESSION["IsAdmin"]) || $_SESSION["IsAdmin"] != 1) {
                                                     echo "../index.php";
                                                 } else {
-                                                    if($currentpage=="information"){
-                                                        echo "../admin/admin-homepage.php";
-                                                    }else{
-                                                        echo "admin-homepage.php";
-                                                    }
+                                                    echo "../admin/admin-homepage.php";
                                                 }
                                             } ?>>Home</a>
             </li>
             <?php if ($currentpage != "login" && $currentpage != "registrazione") {
                 if (isset($_SESSION["IsAdmin"])) {
-                    if($_SESSION["IsAdmin"] == 1){
-                        if($currentpage=="information"){
+                    if ($_SESSION["IsAdmin"] == 1) {
+                        if ($currentpage != "index") {
                             echo '<li class="nav-item"><a class="nav-link" href="../admin/view-requests.php">Richieste di affitto</a></li>' . PHP_EOL . '<li class="nav-item"><a class="nav-link" href="../admin/view-apartments.php">Appartamenti in affitto</a></li>' . PHP_EOL . '<li class="nav-item"><a class="nav-link" href="../admin/view-bookings.php">Storico prenotazioni</a></li>' . PHP_EOL . '<li class="nav-item"><a class="nav-link" href="../admin/view-users.php">Elenco utenti</a></li>';
                         }else{
-                            echo '<li class="nav-item"><a class="nav-link" href="view-requests.php">Richieste di affitto</a></li>' . PHP_EOL . '<li class="nav-item"><a class="nav-link" href="view-apartments.php">Appartamenti in affitto</a></li>' . PHP_EOL . '<li class="nav-item"><a class="nav-link" href="view-bookings.php">Storico prenotazioni</a></li>' . PHP_EOL . '<li class="nav-item"><a class="nav-link" href="view-users.php">Elenco utenti</a></li>';
+                            echo '<li class="nav-item"><a class="nav-link" href="admin/view-requests.php">Richieste di affitto</a></li>' . PHP_EOL . '<li class="nav-item"><a class="nav-link" href="admin/view-apartments.php">Appartamenti in affitto</a></li>' . PHP_EOL . '<li class="nav-item"><a class="nav-link" href="admin/view-bookings.php">Storico prenotazioni</a></li>' . PHP_EOL . '<li class="nav-item"><a class="nav-link" href="admin/view-users.php">Elenco utenti</a></li>';
                         }
-                    }else if ($_SESSION["IsAdmin"] == 0) {
-                        if($currentpage=="index"){
-                            $page="private/";
-                            $page2="pub/";
-                        }else{
-                            if($currentpage=="research"|| $currentpage=="registrazione"|| $currentpage=="login"|| $currentpage=="information"||$currentpage=="contacts"){
-                                $page="../private/";
-                            }else{
-                                $page="";  
+                    } else if ($_SESSION["IsAdmin"] == 0) {
+                        if ($currentpage == "index") {
+                            $page = "private/";
+                            $page2 = "pub/";
+                        } else {
+                            if ($currentpage == "research" || $currentpage == "registrazione" || $currentpage == "login" || $currentpage == "information" || $currentpage == "contacts") {
+                                $page = "../private/";
+                            } else {
+                                $page = "";
                             }
-                            $page2="../pub/";
+                            $page2 = "../pub/";
                         }
-                    echo '<li class="nav-item"><a class="nav-link" href="'.$page.'rent-your-house.php">Nuova richiesta</a></li>' . PHP_EOL . '<li class="nav-item"><a class="nav-link" href="'.$page2.'contacts.php">Contatti</a></li>';
+                        echo '<li class="nav-item"><a class="nav-link" href="' . $page . 'rent-your-house.php">Nuova richiesta</a></li>' . PHP_EOL . '<li class="nav-item"><a class="nav-link" href="' . $page2 . 'contacts.php">Contatti</a></li>';
                     }
-                }else{
-                    if($currentpage!="contacts"){
+                } else {
+                    if ($currentpage != "contacts" && $currentpage == "index") {
                         echo '<li class="nav-item"><a class="nav-link" href="pub/contacts.php">Contatti</a></li>';
+                    }else if($currentpage != "contacts"){
+                        echo '<li class="nav-item"><a class="nav-link" href="contacts.php">Contatti</a></li>';
                     }
                 }
             } else {
-                if($currentpage!="contacts"){
+                if ($currentpage != "contacts") {
                     echo '<li class="nav-item"><a class="nav-link" href="contacts.php">Contatti</a></li>';
                 }
             }

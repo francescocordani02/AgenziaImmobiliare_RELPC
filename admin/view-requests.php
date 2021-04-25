@@ -2,8 +2,8 @@
 define('mydal', TRUE);
 include_once '../config/dal.php';
 session_start();
-if (!isset($_SESSION['IsAdmin']) || $_SESSION['IsAdmin'] != 1) {
-    header("location: ../login.php");
+if (isset($_SESSION['Username']) == "") {
+    header("location: ../pub/login.php");
 }
 $_SESSION['current_page'] = "view-requests";
 ?>
@@ -11,7 +11,8 @@ $_SESSION['current_page'] = "view-requests";
 <html lang="it">
 
 <head>
-    <?php include '../template/header.php'; ?>    
+    <?php include '../template/header.php'; ?> 
+    <script src="../js/index.js"></script>   
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 </head>
 

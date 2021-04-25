@@ -1,7 +1,8 @@
 <?php
 session_start();
+$IdAppartamento=$_GET['IdAppartamento'];
 if (isset($_SESSION['Username']) == "") {
-    header("location: ../login.php");
+    header("location: ../pub/login.php");
 }
 $_SESSION['current_page'] = "scelta-data";
 define('mydal', TRUE);
@@ -22,8 +23,8 @@ include '../config/dal.php';
         ?>
         <div class="scelta-data">
             <h3 class="display-3" style="color: white">Periodo prenotazione</h3>
-            <form class="scelta-data" action="checkout.php">
-                <label for="daterange" class="form-label">Range Date:</label>
+            <form class="scelta-data" action="controllo-data.php">
+                <label for="daterange" class="form-label" style="color:white">Range Date:</label>
                 <input type="text" id="date" name="daterange" value="<?php echo "date ('d/m/Y')"; ?>-<?php echo "date ('d/m/Y')"; ?>" style="width:370px;text-align:center;" />
                 <br>
                 <button type="submit" id="button" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Vai al checkout</button>
