@@ -749,6 +749,11 @@ function InserisciPrenotazione($DataInizio, $DataFine, $Costo, $IdAppartamento, 
         echo "<br>";
         echo "<h5 style='color:white'>Codice prenotazione: " . $codice . "</h5>";
     }
+    $query_dpc = "UPDATE appartamenti SET dpc=1";
+    $result = mysqli_query($conn, $query_dpc);
+    if(!$result){
+        die("Errore!");
+    }
     mysqli_close($conn);
 }
 
