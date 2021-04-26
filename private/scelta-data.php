@@ -38,6 +38,7 @@ include '../config/dal.php';
                     });
                 });
             </script>
+            <?php Disponibilità($IdAppartamento); ?>
         </div>
     </div>
     <?php
