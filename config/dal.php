@@ -673,7 +673,7 @@ function ControllaData($Id, $DataInizio, $DataFine)
     $conn = Connettiti();
     $data1 = date("Y-m-d", strtotime($DataInizio));
     $data2 = date("Y-m-d", strtotime($DataFine));
-    $query_id = "SELECT IdPrenotazione FROM prenotazioni WHERE EXISTS(SELECT * FROM prenotazioni WHERE FK_IdAppartamento = $Id AND DataInizio AND DataFine BETWEEN '" . $data1 . "' AND '" . $data2 . "')";
+    $query_id = "SELECT IdPrenotazione FROM prenotazioni WHERE EXISTS (SELECT * FROM prenotazioni WHERE FK_IdAppartamento = $Id AND DataInizio BETWEEN '" . $data1 . "' AND '" . $data2 . "' OR DataFine BETWEEN '" . $data1 . "' AND '" . $data2 . "')";
     $result = mysqli_query($conn, $query_id);
     $rowResult = mysqli_num_rows($result);
     if ($rowResult > 0) {
