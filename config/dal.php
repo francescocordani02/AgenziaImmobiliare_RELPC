@@ -34,13 +34,7 @@ function Registrazione($nome, $cognome, $username, $email, $password, $indirizzo
         if (!$result) {
             die("Errore query");
         } else {
-            $queryid = $conn->query("SELECT IdUtente FROM utenti WHERE Username=$username");
-            $rowid = $queryid->fetch_assoc();
-            $_SESSION['IdUtente'] = $rowid['IdUtente'];
-            $_SESSION['Username'] = $username;
-            $_SESSION['NomeCognome'] = $nome . " " . $cognome;
-            $_SESSION['IsAdmin'] = 0;
-            echo "<div class='form1'><h3>Ti sei registrato con successo.</h3><br/>Cliccare qui per <a href='../index.php'>andare alla homepage.</a></div>";
+            echo "<div class='form1'><h3>Ti sei registrato con successo.</h3><br/>Cliccare qui per <a href='../pub/login.php'>fare il login.</a></div>";
         }
     }
     mysqli_close($conn);
@@ -80,7 +74,7 @@ function OttieniAppartamenti()
 {
     $conn = Connettiti();
     $tabella = "";
-    $query = "SELECT * FROM appartamenti INNER JOIN quartieri ON FK_IdQuartiere=IdQuartiere INNER JOIN categorie ON FK_IdCategoria=IdCategoria INNER JOIN utenti ON FK_IdUtenti=IdUtente ORDER BY NomeAPP ASC";
+    $query = "SELECT * FROM appartamenti INNER JOIN quartieri ON FK_IdQuartiere=IdQuartiere INNER JOIN categorie ON FK_IdCategoria=IdCategoria INNER JOIN utenti ON FK_IdUtenti=IdUtente";
     $result = $conn->query($query);
     while ($row = $result->fetch_assoc()) {
         $tabella .= "<tr><td>" . $row["NomeApp"] . "</td><td>" . $row["Indirizzo"] . "</td><td>" . $row["NomeQuartiere"] . "</td><td>" . $row["Categoria"] . "</td><td>" . $row["Superficie"] . "</td><td>" . $row["PrezzoGiorno"] . "</td><td>" . $row["Nome"] . " " . $row["Cognome"] . "</td><td>" . $row["Parcheggio"] . "</td><td>" . $row["PostiLetto"] . "</td><td><a href='../pub/information.php?IdAppartamento=" . $row["IdAppartamento"] . "'>Vedi</a></td><td><a href='cancel-apartment.php?IdAppartamento=" . $row["IdAppartamento"] . "'>Elimina</a></td></tr>";
@@ -120,13 +114,17 @@ function AppartamentiHomepage()
     $conn = Connettiti();
     $i = 1;
     while ($i <= 6) {
-        echo '<div class="col-sm m-4">' . PHP_EOL . '<div class="card" style="width:560px;text-align:center;background-color:#171717;color:white;border-style:solid; border-width:4px;border-color:#d6ad60;border-radius:0px;">' . PHP_EOL . '<div class="card-body">';
-        $query = $conn->query("SELECT Immagine, Categoria, Note, PrezzoGiorno FROM immagini INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento INNER JOIN categorie ON FK_IdCategoria=IdCategoria WHERE IdAppartamento=$i LIMIT 1");
+        echo '<div class="col-xl-4 mt-4">' . PHP_EOL . '<div class="card" style="max-width:560px;text-align:center;background-color:#171717;color:white;border-style:solid; border-width:4px;border-color:#d6ad60;border-radius:0px;">' . PHP_EOL . '<div class="card-body">';
+        $query = $conn->query("SELECT Immagine, Categoria, Note, Indirizzo, PrezzoGiorno FROM immagini INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento INNER JOIN categorie ON FK_IdCategoria=IdCategoria WHERE IdAppartamento=$i LIMIT 1");
         if ($query->num_rows > 0) {
             $row = $query->fetch_assoc();
-            echo '<img src=' . $row['Immagine'] . ' class="card-img-top" alt="img"style="height:300px">';
-            echo '<h5 class="card-title"style="padding-top:15px;">' . $row['Categoria'] . '</h5>';
-            echo '<p class="card-text">' . $row['Note'] . '</p>' . PHP_EOL . '<p class="card-text">Prezzo giornaliero: € ' . $row['PrezzoGiorno'] . '</p>';
+            $query2 = $conn->query("SELECT NomeQuartiere FROM Quartieri INNER JOIN appartamenti ON IdQuartiere=IdQuartiere WHERE IdAppartamento=$i");
+            if ($query2->num_rows > 0) {
+                $row2 = $query2->fetch_assoc();
+                echo '<img src=' . $row['Immagine'] . ' class="card-img-top" alt="img"style="max-height:300px">';
+                echo '<h5 class="card-title"style="padding-top:15px;">' . $row['Indirizzo'] . ', ' . $row2['NomeQuartiere'] . '</h5>';
+                echo '<p class="card-text">' . $row['Note'] . '</p>' . PHP_EOL . '<p class="card-text">Prezzo giornaliero: € ' . $row['PrezzoGiorno'] . '</p>';
+            }
         }
         echo '<a href="pub/information.php?IdAppartamento=' . $i . '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>';
         echo '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
@@ -301,9 +299,9 @@ function Disponibilità($IdAppartamento)
                     }
                     echo ' in carico sull\'' . $nome . '. <br>Le giornate in cui l\'immobile non è disponibile sono le seguenti:</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
                     while ($rowcont = $querycont->fetch_assoc()) {
-                        echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;">- Dal ' . date("d/m/Y", strtotime($rowcont['DataInizio'])) . ' al ' . date("d/m/Y", strtotime($rowcont['DataFine'])) . '.</h1>';
+                        echo '<div class="row" style="padding:10px;">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;">- Dal ' . date("d/m/Y", strtotime($rowcont['DataInizio'])) . ' al ' . date("d/m/Y", strtotime($rowcont['DataFine'])) . '.</h1>';
                     }
-                    echo  '</div>' . PHP_EOL . '</div>';
+                    echo  '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
                 }
             }
         }
@@ -320,7 +318,8 @@ function Proprietario($IdAppartamento)
         while ($row = $query->fetch_assoc()) {
             echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;">- Nome: ' . $row['Nome'] . '.</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
             echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;">- Cognome: ' . $row['Cognome'] . '.</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
-            echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;padding-bottom:20px;">- ☏: +39 ' . $row['Telefono'] . '</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+            echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;padding-bottom:20px;">- ☏ Telefono: +39 ' . $row['Telefono'] . '</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+            echo '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
         }
     }
     mysqli_close($conn);
@@ -335,7 +334,7 @@ function ProprietarioRichiesta($IdRichiesta)
         while ($row = $query->fetch_assoc()) {
             echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;">- Nome: ' . $row['Nome'] . '.</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
             echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;">- Cognome: ' . $row['Cognome'] . '.</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
-            echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;padding-bottom:20px;">- ☏: +39 ' . $row['Telefono'] . '</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+            echo '<div class="row">' . PHP_EOL . '<div class="col-12">' . PHP_EOL . '<h1 style="color:white;text-align:center; font-size:18px;padding-top:5px;padding-bottom:20px;">- ☏ Telefono: +39 ' . $row['Telefono'] . '</h1>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
         }
     }
     mysqli_close($conn);
@@ -417,7 +416,7 @@ function ImmagineAppartamentoRicerca($IdAppartamento)
 function Appartamenti_Cercati($Quartiere, $Categoria, $PostiLetto, $PostiAuto, $AffittoMin, $AffittoMax, $SuperficieMin, $SuperficieMax, $DataInizio, $DataFine)
 {
     $conn = Connettiti();
-    echo '<div class="col-sm m-4"style="color:white;">';
+    echo '<div class="col-xl-8 px-0 px-md-auto p-md-4"style="color:white;">' . PHP_EOL . '<div class="row">';
     $query_quartiere = $conn->query("SELECT IdQuartiere FROM quartieri WHERE NomeQuartiere='" . $Quartiere . "'");
     if ($query_quartiere->num_rows > 0) {
         $row = $query_quartiere->fetch_assoc();
@@ -433,39 +432,41 @@ function Appartamenti_Cercati($Quartiere, $Categoria, $PostiLetto, $PostiAuto, $
         while ($row2 = $query_appartamenti->fetch_assoc()) {
             $IdAppartamento = $row2['IdAppartamento'];
             $note = substr($row2['Note'], 0, 80);
-            echo '<div class="container-fluid"style="border-style:solid; border-width:4px;border-color:#d6ad60;margin-top:30px;">' . PHP_EOL . '<div class="row">';
-            echo '<div class="col-6"><img src="' . ImmagineAppartamentoRicerca($IdAppartamento) . '" class="img-fluid" alt="img"style="padding-top:17px;padding-bottom:17px;height:318px;"></div>';
-            echo '<div class="col-6">' . PHP_EOL . '<div class="container">' . PHP_EOL . '<div class="row"style="padding-top:20px; text-align:center;text-transform:uppercase;color:#d6ad60;">' . PHP_EOL . '<h3>' . $row2['NomeApp'] . '</h3>' . PHP_EOL . '</div>';
-            echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>' . $note . '....</h5>' . PHP_EOL . '</div>';
-            echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>' . $row2['Indirizzo'] . ', ' . $Quartiere . '.</h5>' . PHP_EOL . '</div>';
-            echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>Affitto Giornaliero: ' . $row2['PrezzoGiorno'] . ' €</h5>' . PHP_EOL . '</div>';
-            echo '<div class="row align-items-center">' . PHP_EOL . '<div class="col" style="text-align:center;margin-top:20px;">' . PHP_EOL . '<a href="information.php?IdAppartamento=' . $IdAppartamento . '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+            echo '<div class="col-xl-4 mt-4">' . PHP_EOL . '<div class="card" style="max-width:560px;text-align:center;background-color:#171717;color:white;border-style:solid; border-width:4px;border-color:#d6ad60;border-radius:0px;">' . PHP_EOL . '<div class="card-body">';
+            echo '<img src=' . ImmagineAppartamentoRicerca($IdAppartamento) . ' class="card-img-top" alt="img"style="max-height:300px">';
+            echo '<h5 class="card-title"style="padding-top:15px;">' . $row2['Indirizzo'] . ', ' . $Quartiere . '</h5>';
+            echo '<p class="card-text">' . $note . '</p>' . PHP_EOL . '<p class="card-text">Prezzo giornaliero: € ' . $row2['PrezzoGiorno'] . '</p>';
+            echo '<a href="information.php?IdAppartamento=' . $IdAppartamento . '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>';
+            echo '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
         }
     } else {
-        echo 'la ricerca non ha prodotto risultati';
-    }
-    $DataInizio = date("Y-m-d", strtotime($DataInizio));
-    $DataFine = date("Y-m-d", strtotime($DataFine));
-    $query_date = $conn->query("SELECT DISTINCT FK_IdAppartamento FROM prenotazioni INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento WHERE DataInizio <> '" . $DataInizio . "' AND DataFine <> '" . $DataFine . "' AND DataInizio NOT BETWEEN '" . $DataInizio . "' AND '" . $DataFine . "' AND DataFine NOT BETWEEN '" . $DataInizio . "' AND '" . $DataFine . "' AND NOT (DataInizio < '" . $DataInizio . "' AND DataFine > '" . $DataFine . "') AND PrezzoGiorno BETWEEN $AffittoMin AND $AffittoMax AND FK_IdQuartiere=$FK_IdQuartiere AND FK_IdCategoria=$FK_IdCategoria AND PostiLetto=$PostiLetto AND Parcheggio=$PostiAuto AND Superficie BETWEEN $SuperficieMin AND $SuperficieMax");
-    if ($query_date->num_rows > 0) {
-        while ($row3 = $query_date->fetch_assoc()) {
-            $FK_IdAppartamento = $row3['FK_IdAppartamento'];
-            $query_appartamenti_date = $conn->query("SELECT * FROM appartamenti WHERE IdAppartamento = $FK_IdAppartamento");
-            if ($query_appartamenti_date->num_rows > 0) {
-                while ($row4 = $query_appartamenti_date->fetch_assoc()) {
-                    $note = substr($row4['Note'], 0, 80);
-                    $IdAppartamento = $row4['IdAppartamento'];
-                    echo '<div class="container-fluid"style="border-style:solid; border-width:4px;border-color:#d6ad60;margin-top:30px;">' . PHP_EOL . '<div class="row">';
-                    echo '<div class="col-6"><img src="' . ImmagineAppartamentoRicerca($IdAppartamento) . '" class="img-fluid" alt="img"style="padding-top:17px;padding-bottom:17px;height:318px;"></div>';
-                    echo '<div class="col-6">' . PHP_EOL . '<div class="container">' . PHP_EOL . '<div class="row"style="padding-top:20px; text-align:center;text-transform:uppercase;color:#d6ad60;">' . PHP_EOL . '<h3>' . $row4['NomeApp'] . '</h3>' . PHP_EOL . '</div>';
-                    echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>' . $note . '....</h5>' . PHP_EOL . '</div>';
-                    echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>' . $row4['Indirizzo'] . ', ' . $Quartiere . '.</h5>' . PHP_EOL . '</div>';
-                    echo '<div class="row"style="text-align:center;padding-top:20px;">' . PHP_EOL . '<h5>Affitto Giornaliero: ' . $row4['PrezzoGiorno'] . ' €</h5>' . PHP_EOL . '</div>';
-                    echo '<div class="row align-items-center">' . PHP_EOL . '<div class="col" style="text-align:center;margin-top:20px;">' . PHP_EOL . '<a href="information.php?IdAppartamento=' . $IdAppartamento . '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+
+        $DataInizio = date("Y-m-d", strtotime($DataInizio));
+        $DataFine = date("Y-m-d", strtotime($DataFine));
+        $query_date = $conn->query("SELECT DISTINCT FK_IdAppartamento FROM prenotazioni INNER JOIN appartamenti ON FK_IdAppartamento=IdAppartamento WHERE DataInizio <> '" . $DataInizio . "' AND DataFine <> '" . $DataFine . "' AND DataInizio NOT BETWEEN '" . $DataInizio . "' AND '" . $DataFine . "' AND DataFine NOT BETWEEN '" . $DataInizio . "' AND '" . $DataFine . "' AND NOT (DataInizio < '" . $DataInizio . "' AND DataFine > '" . $DataFine . "') AND PrezzoGiorno BETWEEN $AffittoMin AND $AffittoMax AND FK_IdQuartiere=$FK_IdQuartiere AND FK_IdCategoria=$FK_IdCategoria AND PostiLetto=$PostiLetto AND Parcheggio=$PostiAuto AND Superficie BETWEEN $SuperficieMin AND $SuperficieMax");
+        if ($query_date->num_rows > 0) {
+            while ($row3 = $query_date->fetch_assoc()) {
+                $FK_IdAppartamento = $row3['FK_IdAppartamento'];
+                $query_appartamenti_date = $conn->query("SELECT * FROM appartamenti WHERE IdAppartamento = $FK_IdAppartamento");
+                if ($query_appartamenti_date->num_rows > 0) {
+                    while ($row4 = $query_appartamenti_date->fetch_assoc()) {
+                        $note = substr($row4['Note'], 0, 80);
+                        $IdAppartamento = $row4['IdAppartamento'];
+                        echo '<div class="col-xl-4 mt-4">' . PHP_EOL . '<div class="card" style="max-width:560px;text-align:center;background-color:#171717;color:white;border-style:solid; border-width:4px;border-color:#d6ad60;border-radius:0px;">' . PHP_EOL . '<div class="card-body">';
+                        echo '<img src=' . ImmagineAppartamentoRicerca($IdAppartamento) . ' class="card-img-top" alt="img"style="max-height:300px">';
+                        echo '<h5 class="card-title"style="padding-top:15px;">' . $row4['Indirizzo'] . ', ' . $Quartiere . '</h5>';
+                        echo '<p class="card-text">' . $note . '</p>' . PHP_EOL . '<p class="card-text">Prezzo giornaliero: € ' . $row4['PrezzoGiorno'] . '</p>';
+                        echo '<a href="information.php?IdAppartamento=' . $IdAppartamento . '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>';
+                        echo '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
+                    }
+                } else {
+                    echo 'la ricerca non ha prodotto risultati';
                 }
             }
         }
     }
+    echo '</div>' . PHP_EOL . '</div>';
+
     mysqli_close($conn);
 }
 
@@ -680,7 +681,7 @@ function ControllaData($Id, $DataInizio, $DataFine)
         echo "<h1 class='display-3' style='color:white'>L'immobile non è disponibile nel range di date indicato.</h1>";
         echo "<a href='../private/scelta-data.php?IdAppartamento=$Id'>Clicca qui per scegliere di nuovo la data</a>";
     } else {
-        header("location: checkout.php");
+        header("Location: checkout.php");
     }
     mysqli_close($conn);
 }

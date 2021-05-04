@@ -13,8 +13,8 @@ $_SESSION['current_page']="index";
     <?php include 'template/navbar.php'; ?>
    <div class="container-fluid"style="background-color:#171717">
         <div class="row">
-            <div class="col-sm-8 m-4">
-                <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div class="col-xl-8 px-0 px-md-auto p-md-4">
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                         <img src="img/carosello1.jpg" class="d-block w-100" alt="...">
@@ -31,14 +31,11 @@ $_SESSION['current_page']="index";
                     </div>
                 </div>
             </div>
-            <div class="col-sm m-4">
-                <div class="container"style="border-style:solid; border-width:4px;border-color:#d6ad60;">
+            <div class="col-xl-4 mt-4">
+                <div class="container"style="border-style:solid; max-width:560px; float: left;border-width:4px;border-color:#d6ad60;">
                     <div class="row">
-                        <div class="col-8">
+                        <div class="col-12">
                             <h1 style="text-align:center; padding-top:23px;color:white;">AGENZIA IMMOBILIARE RELPC</h1>
-                        </div>
-                        <div class="col-4"style="padding-top:20px;">
-                        <img src="img/logo.gif" class="rounded" alt="..."style="width=170px;height:170px;margin-left:-10px;padding-bottom:30px;">
                         </div>
                     </div>
                     <div class="row">
@@ -120,7 +117,7 @@ $_SESSION['current_page']="index";
                                     </div>
                                     <div class="col-md-12">
                                     <label for="daterange" class="form-label">Range Date:</label>
-                                    <input type="text" id="date"name="daterange" value="<?php echo "date ('d/m/Y')";?>-<?php echo "date ('d/m/Y')";?>" style="width:370px;text-align:center;"/>
+                                    <input type="text" id="date"name="daterange" value="<?php echo "date ('d/m/Y')";?>-<?php echo "date ('d/m/Y')";?>" style="max-width:370px;text-align:center;"/>
                                     </div>
                                     <div class="col-12">
                                     <button type="submit" id="button" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">RICERCA</button>
@@ -135,7 +132,7 @@ $_SESSION['current_page']="index";
    </div>
    <div class="container-fluid"style="background-color:#171717">
         <div class="row">
-            <div class="col-sm-8 m-4">
+            <div class="col-xl-8 px-0 px-md-auto p-md-4">
                 <div class="card"style="background-color:#171717; color:white;" >
                     <div class="card-body"style="padding-top:40px;">
                         <h1>CERCHI APPARTAMENTI PER BREVI PERIODI DI TEMPO?</h1>
@@ -143,9 +140,9 @@ $_SESSION['current_page']="index";
                     </div>
                 </div>
             </div>
-            <div class="col-sm m-4">
-                <div class="container" style="border-style:solid; border-width:4px;border-color:#d6ad60;">
-                    <div class="card text-center"style="padding-top:13px; background-color:#171717;">
+            <div class="col-xl-4 mt-4">
+                <div class="container-fluid" style="border-style:solid; max-width:560px; float:left;border-width:4px;border-color:#d6ad60;">
+                    <div class="card text-center"style="padding-top:13px;  background-color:#171717;">
                         <div class="card-body">
                             <h5 class="card-title"style="color:white;">PUBBLICA UN ANNUNCIO</h5>
                             <p class="card-text"style="color:white;">Immobile da affittare? Invia una richiesta di pubblicazione.</p>

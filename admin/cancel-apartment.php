@@ -1,11 +1,10 @@
 <?php
 session_start();
-if (isset($_SESSION['Username']) == "") {
-  header("location: ../pub/login.php");
-}
-$_SESSION['current_page'] = "cancel-apartment";
 define('mydal', TRUE);
 include '../config/dal.php';
+if (isset($_SESSION['Username']) ) {
+  if ($_SESSION['IsAdmin'] == 1) {
+$_SESSION['current_page'] = "cancel-apartment";
 $IdAppartamento=$_GET['IdAppartamento']
 ?>
 <html lang="it">
@@ -31,3 +30,13 @@ $IdAppartamento=$_GET['IdAppartamento']
 </body>
 
 </html>
+<?php } else {
+        if (isset($_SESSION['Username'])) {
+            exit('<h3>Non puoi accedere a questa pagina, <a href="../index.php">torna alla homepage</a>.</h3>');
+        } else {
+            exit('<h3>Non puoi accedere a questa pagina, <a href="../pub/login.php">fai il login come admin</a> per poter accedere.</h3>');
+        }
+    }
+} else {
+    exit('<h3>Non puoi accedere a questa pagina, <a href="../pub/login.php">fai il login come admin</a> per poter accedere.</h3>');
+} ?>

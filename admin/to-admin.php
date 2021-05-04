@@ -1,10 +1,9 @@
 <?php
 session_start();
-if (isset($_SESSION['Username']) == "") {
-  header("location: ../pub/login.php");
-}
 $_SESSION['current_page'] = "to-admin";
 define('mydal', TRUE);
+if (isset($_SESSION['Username'])) {
+  if ($_SESSION['IsAdmin'] == 1) {
 include '../config/dal.php';
 $IdUtente=$_GET['IdUtente'];
 $PoniAdmin=$_GET['PoniAdmin'];
@@ -32,3 +31,13 @@ $PoniAdmin=$_GET['PoniAdmin'];
 </body>
 
 </html>
+<?php } else {
+        if (isset($_SESSION['Username'])) {
+            exit('<h3>Non puoi accedere a questa pagina, <a href="../index.php">torna alla homepage</a>.</h3>');
+        } else {
+            exit('<h3>Non puoi accedere a questa pagina, <a href="../pub/login.php">fai il login come admin</a> per poter accedere.</h3>');
+        }
+    }
+} else {
+    exit('<h3>Non puoi accedere a questa pagina, <a href="../pub/login.php">fai il login come admin</a> per poter accedere.</h3>');
+} ?>

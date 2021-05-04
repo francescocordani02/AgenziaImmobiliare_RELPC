@@ -1,10 +1,9 @@
 <?php
+session_start();
 define('mydal', TRUE);
 include_once '../config/dal.php';
-session_start();
-if (isset($_SESSION['Username']) == "") {
-    header("location: ../pub/login.php");
-}
+if (isset($_SESSION['Username']) ) {
+    if ($_SESSION['IsAdmin'] == 1) {
 $_SESSION['current_page'] = "view-requests";
 $IdRichiesta = $_GET['IdRichiesta'];
 $rowinfo = InformazioniRichiesta($IdRichiesta);
@@ -172,3 +171,13 @@ $rowinfo = InformazioniRichiesta($IdRichiesta);
 </body>
 
 </html>
+<?php } else {
+        if (isset($_SESSION['Username'])) {
+            exit('<h3>Non puoi accedere a questa pagina, <a href="../index.php">torna alla homepage</a>.</h3>');
+        } else {
+            exit('<h3>Non puoi accedere a questa pagina, <a href="../pub/login.php">fai il login come admin</a> per poter accedere.</h3>');
+        }
+    }
+} else {
+    exit('<h3>Non puoi accedere a questa pagina, <a href="../pub/login.php">fai il login come admin</a> per poter accedere.</h3>');
+} ?>
