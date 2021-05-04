@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION['Username']) == "") {
+if (isset($_SESSION['Username'])) {
     header("location: ../pub/login.php");
 }
 $_SESSION['current_page'] = "accept-refuse";

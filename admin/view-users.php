@@ -12,6 +12,9 @@ $_SESSION['current_page'] = "view-apartments";
 
 <head>
     <?php include '../template/header.php'; ?>
+    
+    <script src="../js/index.js"></script>   
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 </head>
 
 <body style="background-color: #171717;">

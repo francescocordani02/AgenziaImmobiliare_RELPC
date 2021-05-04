@@ -331,16 +331,10 @@ span.price {
 }
 
 @media only screen and (max-width:800px) {
-    #date {
-        width: 200px;
-    }
     #map {
         width: 100%;
         height: 100%;
         padding-bottom: 100%;
-    }
-    .row {
-        flex-direction: column-reverse;
     }
     .col-25 {
         margin-bottom: 20px;

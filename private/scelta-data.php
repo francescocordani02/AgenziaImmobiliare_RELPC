@@ -1,6 +1,6 @@
 <?php
 session_start();
-$IdAppartamento=$_GET['IdAppartamento'];
+$IdAppartamento = $_GET['IdAppartamento'];
 if (isset($_SESSION['Username']) == "") {
     header("location: ../pub/login.php");
 }
@@ -29,16 +29,28 @@ include '../config/dal.php';
                 <br>
                 <button type="submit" id="button" class="btn btn-warning" style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Vai al checkout</button>
             </form>
-            <script>
-                $(function() {
-                    $('input[name="daterange"]').daterangepicker({
-                        opens: 'left'
-                    }, function(start, end, label) {
-                        console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-                    });
-                });
-            </script>
         </div>
+        <div class="container-fluid" style="max-width: 700px; border-style:solid; border-width:4px;border-color:#d6ad60;background-color:#171717;">
+            <div class="row">
+                <div class="col-12">
+                    <h1 style="text-align:center; padding-top:20px;color: #d6ad60;;font-size:25px;">DISPONIBILITÀ APPARTAMENTO</h1>
+                </div>
+            </div>
+            <?php Disponibilità($IdAppartamento); ?>
+        </div>
+    </div>
+    <script>
+        $(function() {
+            $('input[name="daterange"]').daterangepicker({
+                opens: 'left'
+            }, function(start, end, label) {
+                console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+            });
+        });
+    </script>
+    </div>
+    </div>
+    </div>
     </div>
     <?php
     include("../template/footer.php");
