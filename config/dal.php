@@ -74,7 +74,7 @@ function OttieniAppartamenti()
 {
     $conn = Connettiti();
     $tabella = "";
-    $query = "SELECT * FROM appartamenti INNER JOIN quartieri ON FK_IdQuartiere=IdQuartiere INNER JOIN categorie ON FK_IdCategoria=IdCategoria INNER JOIN utenti ON FK_IdUtenti=IdUtente ORDER BY NomeAPP ASC";
+    $query = "SELECT * FROM appartamenti INNER JOIN quartieri ON FK_IdQuartiere=IdQuartiere INNER JOIN categorie ON FK_IdCategoria=IdCategoria INNER JOIN utenti ON FK_IdUtenti=IdUtente";
     $result = $conn->query($query);
     while ($row = $result->fetch_assoc()) {
         $tabella .= "<tr><td>" . $row["NomeApp"] . "</td><td>" . $row["Indirizzo"] . "</td><td>" . $row["NomeQuartiere"] . "</td><td>" . $row["Categoria"] . "</td><td>" . $row["Superficie"] . "</td><td>" . $row["PrezzoGiorno"] . "</td><td>" . $row["Nome"] . " " . $row["Cognome"] . "</td><td>" . $row["Parcheggio"] . "</td><td>" . $row["PostiLetto"] . "</td><td><a href='../pub/information.php?IdAppartamento=" . $row["IdAppartamento"] . "'>Vedi</a></td><td><a href='cancel-apartment.php?IdAppartamento=" . $row["IdAppartamento"] . "'>Elimina</a></td></tr>";
@@ -436,7 +436,7 @@ function Appartamenti_Cercati($Quartiere, $Categoria, $PostiLetto, $PostiAuto, $
             echo '<img src=' . ImmagineAppartamentoRicerca($IdAppartamento) . ' class="card-img-top" alt="img"style="max-height:300px">';
             echo '<h5 class="card-title"style="padding-top:15px;">' . $row2['Indirizzo'] . ', ' . $Quartiere . '</h5>';
             echo '<p class="card-text">' . $note . '</p>' . PHP_EOL . '<p class="card-text">Prezzo giornaliero: € ' . $row2['PrezzoGiorno'] . '</p>';
-            echo '<a href="/information.php?IdAppartamento=' . $IdAppartamento . '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>';
+            echo '<a href="information.php?IdAppartamento=' . $IdAppartamento . '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>';
             echo '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
         }
     } else {
@@ -456,7 +456,7 @@ function Appartamenti_Cercati($Quartiere, $Categoria, $PostiLetto, $PostiAuto, $
                         echo '<img src=' . ImmagineAppartamentoRicerca($IdAppartamento) . ' class="card-img-top" alt="img"style="max-height:300px">';
                         echo '<h5 class="card-title"style="padding-top:15px;">' . $row4['Indirizzo'] . ', ' . $Quartiere . '</h5>';
                         echo '<p class="card-text">' . $note . '</p>' . PHP_EOL . '<p class="card-text">Prezzo giornaliero: € ' . $row4['PrezzoGiorno'] . '</p>';
-                        echo '<a href="/information.php?IdAppartamento=' . $IdAppartamento . '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>';
+                        echo '<a href="information.php?IdAppartamento=' . $IdAppartamento . '" class="btn btn-warning"style="color:#d6ad60;border: radius 5px;border-color:#d6ad60;background-color:#171717">Affitta</a>';
                         echo '</div>' . PHP_EOL . '</div>' . PHP_EOL . '</div>';
                     }
                 } else {
@@ -681,7 +681,7 @@ function ControllaData($Id, $DataInizio, $DataFine)
         echo "<h1 class='display-3' style='color:white'>L'immobile non è disponibile nel range di date indicato.</h1>";
         echo "<a href='../private/scelta-data.php?IdAppartamento=$Id'>Clicca qui per scegliere di nuovo la data</a>";
     } else {
-        header("location: checkout.php");
+        header("Location: checkout.php");
     }
     mysqli_close($conn);
 }
